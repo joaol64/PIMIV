@@ -27,7 +27,7 @@ public class UserRepository
         // Por padrão, o driver pode demorar ~30s tentando conectar se o MongoDB estiver desligado.
         // Para ficar mais "amigável" para iniciantes, reduzimos o timeout de seleção de servidor.
         var clientSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-        clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(3);
+        clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(10);
         var client = new MongoClient(clientSettings);
         var database = client.GetDatabase(settings.DatabaseName);
 

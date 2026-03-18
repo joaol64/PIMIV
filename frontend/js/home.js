@@ -25,6 +25,8 @@ showVideoBtn.addEventListener("click", () => {
   // Mostra o vídeo HTML5 na tela.
   videoEl.classList.add("show");
 
+  videoEl.play(); // 🔥 começa o vídeo
+
   // Se o arquivo video.mp4 não existir, o navegador mostrará erro no player.
   // Isso é ok porque é um placeholder (você pode colocar um vídeo real depois).
   showMessage("Vídeo exibido abaixo.", "success");
