@@ -1,0 +1,45 @@
+# =========================
+# .NET / Visual Studio / VS Code
+# =========================
+bin/
+obj/
+.vs/
+.vscode/
+
+# Rider / JetBrains
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww]in32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Logs
+*.log
+
+# OS junk
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Frontend
+# =========================
+# Se você colocar um vídeo real aqui, pode ser grande.
+# (Deixe descomentado se quiser ignorar o arquivo localmente)
+# frontend/video.mp4
+

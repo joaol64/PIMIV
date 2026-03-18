@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:23996",
+      "sslPort": 44335
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MongoDbSettings__ConnectionString": "mongodb+srv://USUARIO:SENHA@CLUSTER.wtud6ye.mongodb.net/pim?retryWrites=true&w=majority",
+        "MongoDbSettings__DatabaseName": "pim"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MongoDbSettings__ConnectionString": "mongodb+srv://USUARIO:SENHA@CLUSTER.wtud6ye.mongodb.net/pim?retryWrites=true&w=majority",
+        "MongoDbSettings__DatabaseName": "pim"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MongoDbSettings__ConnectionString": "mongodb+srv://USUARIO:SENHA@CLUSTER.wtud6ye.mongodb.net/pim?retryWrites=true&w=majority",
+        "MongoDbSettings__DatabaseName": "pim"
+      }
+    }
+  }
+}

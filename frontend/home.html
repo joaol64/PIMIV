@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1 id="welcomeTitle">Bem-vindo</h1>
+        <p>Você está logado. Clique no botão para assistir ao vídeo em Libras.</p>
+
+        <div class="home-actions">
+          <button id="showVideoBtn">Assistir vídeo em Libras</button>
+          <button class="danger" id="logoutBtn">Sair</button>
+        </div>
+
+        <video id="librasVideo" controls>
+          <!-- Placeholder: troque o src para um vídeo real depois -->
+          <source src="video.mp4" type="video/mp4" />
+          Seu navegador não suporta vídeo HTML5.
+        </video>
+
+        <div id="message" class="message"></div>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/home.js"></script>
+  </body>
+</html>
+

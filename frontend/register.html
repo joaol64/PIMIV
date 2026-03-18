@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>Cadastro</h1>
+        <p>Crie sua conta (nome, email e senha).</p>
+
+        <form id="registerForm">
+          <label for="nome">Nome</label>
+          <input id="nome" type="text" autocomplete="name" required />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" required />
+
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" autocomplete="new-password" required />
+
+          <div class="row">
+            <button type="submit">Cadastrar</button>
+            <button class="secondary" type="button" id="backBtn">Voltar</button>
+          </div>
+
+          <div id="message" class="message"></div>
+        </form>
+
+        <a class="link" href="index.html">Já tem conta? Fazer login</a>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/register.js"></script>
+  </body>
+</html>
+
