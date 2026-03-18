@@ -16,16 +16,15 @@ public class UserRepository
 
         if (string.IsNullOrWhiteSpace(settings.ConnectionString))
         {
-            // Explicação didática:
-            // Se você não configurar a variável de ambiente MongoDbSettings__ConnectionString,
-            // o backend não sabe como conectar no MongoDB.
+            // Se a connection string não for fornecida via configuração/variável de ambiente,
+            // o backend não consegue estabelecer conexão com o MongoDB.
             throw new InvalidOperationException(
                 "MongoDbSettings__ConnectionString não foi configurada nas variáveis de ambiente."
             );
         }
 
-        // Por padrão, o driver pode demorar ~30s tentando conectar se o MongoDB estiver desligado.
-        // Para ficar mais "amigável" para iniciantes, reduzimos o timeout de seleção de servidor.
+        // Ajuste para evitar esperas longas: se o MongoDB estiver indisponível,
+        // reduzimos o tempo de seleção de servidor antes de falhar com erro.
         var clientSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
         clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(10);
         var client = new MongoClient(clientSettings);
@@ -52,11 +51,14 @@ public class UserRepository
         }
     }
 
+    // Busca um usuário pelo email (retorna `null` quando não existir).
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await _users.Find(u => u.Email == email).FirstOrDefaultAsync();
     }
 
+    // Insere um novo usuário na collection.
+    // A unicidade do email é garantida pelo índice único criado no construtor.
     public async Task CreateAsync(User user)
     {
         await _users.InsertOneAsync(user);

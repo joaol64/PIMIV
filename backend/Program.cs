@@ -7,19 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers = endpoints "tradicionais" (ex: AuthController com /api/auth/register e /api/auth/login)
 builder.Services.AddControllers();
 
-// Swagger ajuda a testar a API no navegador (bom para iniciantes).
+// Swagger ajuda a testar a API no navegador; útil para inspecionar rotas e formatos de request/response.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // =========================
 // CORS (obrigatório)
 // =========================
-// O frontend (HTML/JS) vai rodar separado do backend e chamará a API via fetch().
-// Sem CORS, o navegador bloquearia as requisições por segurança.
+// O frontend (HTML/JS) roda separado do backend e chama a API via `fetch()`.
+// Sem CORS, o navegador bloquearia as requisições por política de segurança.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
     {
+        // Para simplificar integração: libera origem/método/header vindos do frontend.
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader();
@@ -52,6 +53,8 @@ var app = builder.Build();
 // Porta dinâmica (Render usa PORT).
 // Em desenvolvimento, se PORT não existir, usamos 5000.
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+
+// Faz o servidor escutar na porta escolhida, em todas as interfaces de rede.
 app.Urls.Add($"http://*:{port}");
 
 // Pipeline HTTP
@@ -63,7 +66,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("FrontendPolicy");
 
-// A API deste projeto é HTTP (não HTTPS) para simplificar para iniciantes e facilitar o fetch local.
+// Aplica a policy CORS definida acima, para permitir chamadas do frontend via navegador.
+// A API usa HTTP (não HTTPS) por padrão; assim o front pode chamar diretamente em ambientes locais.
 // Se você quiser HTTPS depois, dá para ativar novamente com certificados.
 // app.UseHttpsRedirection();
 

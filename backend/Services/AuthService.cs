@@ -14,9 +14,11 @@ public class AuthService
         _userRepository = userRepository;
     }
 
+    // Retorna uma tupla para padronizar respostas internas:
+    // Ok = sucesso, ErrorMessage = motivo em caso de falha e Data = usuário (sem senha) quando Ok.
     public async Task<(bool Ok, string? ErrorMessage, AuthResponse? Data)> RegisterAsync(RegisterRequest request)
     {
-        // Validações simples (para iniciantes).
+        // Validações mínimas para garantir que os dados obrigatórios existam.
         if (string.IsNullOrWhiteSpace(request.Nome) ||
             string.IsNullOrWhiteSpace(request.Email) ||
             string.IsNullOrWhiteSpace(request.Senha))
@@ -24,6 +26,7 @@ public class AuthService
             return (false, "Dados inválidos", null);
         }
 
+        // Normalizamos o email para manter comparações consistentes (sem diferenciar maiúsculas/minúsculas).
         var email = request.Email.Trim().ToLowerInvariant();
 
         try
@@ -40,7 +43,7 @@ public class AuthService
         }
 
         // BCrypt gera um hash seguro da senha.
-        // Na hora do login, usamos BCrypt.Verify para comparar.
+        // No login, usamos BCrypt.Verify para comparar a senha informada com o hash armazenado.
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Senha);
 
         var user = new User
@@ -56,7 +59,7 @@ public class AuthService
         }
         catch (MongoWriteException ex) when (ex.WriteError?.Category == ServerErrorCategory.DuplicateKey)
         {
-            // Caso raro: dois cadastros ao mesmo tempo com o mesmo email.
+            // Caso raro: concorrência ao inserir (mesmo email) em função da constraint de unicidade.
             return (false, "Usuário já existe", null);
         }
         catch (MongoException)
@@ -72,6 +75,8 @@ public class AuthService
         });
     }
 
+    // Fluxo de login:
+    // 1) valida inputs, 2) busca usuário por email, 3) valida hash da senha com BCrypt, 4) retorna AuthResponse.
     public async Task<(bool Ok, string? ErrorMessage, AuthResponse? Data)> LoginAsync(LoginRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Email) ||
@@ -80,6 +85,7 @@ public class AuthService
             return (false, "Credenciais inválidas", null);
         }
 
+        // Normalizamos o email para buscar o registro de forma consistente.
         var email = request.Email.Trim().ToLowerInvariant();
 
         User? user;
@@ -97,6 +103,7 @@ public class AuthService
             return (false, "Credenciais inválidas", null);
         }
 
+        // Verifica se a senha informada corresponde ao hash armazenado.
         var ok = BCrypt.Net.BCrypt.Verify(request.Senha, user.PasswordHash);
         if (!ok)
         {
