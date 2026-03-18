@@ -3,7 +3,7 @@
 // - Frontend (HTML/JS) e backend (.NET) são projetos separados.
 // - O navegador chama o backend via HTTP usando fetch().
 // - O backend responde JSON.
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://pimiv.onrender.com";
 
 async function apiPost(path, body) {
   const response = await fetch(`${API_URL}${path}`, {
