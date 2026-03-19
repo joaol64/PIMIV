@@ -1,4 +1,4 @@
-/* Layout simples, centralizado e responsivo (iniciante). */
+/* Layout simples, centralizado e responsivo. */
 
 :root {
   --bg: #0b1220;
@@ -131,6 +131,16 @@ button.danger {
 
 .message.success {
   border-color: rgba(79, 255, 166, 0.35);
+}
+
+.message.loading {
+  border-color: rgba(79, 140, 255, 0.45);
+  color: var(--muted);
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 /* Home */

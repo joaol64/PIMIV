@@ -10,17 +10,17 @@
     <main class="container">
       <section class="card">
         <h1>Cadastro</h1>
-        <p>Crie sua conta (nome, email e senha).</p>
+        <p>Crie sua conta (nome e email até 30 caracteres; senha com no mínimo 6).</p>
 
         <form id="registerForm">
           <label for="nome">Nome</label>
-          <input id="nome" type="text" autocomplete="name" required />
+          <input id="nome" type="text" autocomplete="name" maxlength="30" required />
 
           <label for="email">Email</label>
-          <input id="email" type="email" autocomplete="email" required />
+          <input id="email" type="email" autocomplete="email" maxlength="30" required />
 
           <label for="senha">Senha</label>
-          <input id="senha" type="password" autocomplete="new-password" required />
+          <input id="senha" type="password" autocomplete="new-password" minlength="6" required />
 
           <div class="row">
             <button type="submit">Cadastrar</button>

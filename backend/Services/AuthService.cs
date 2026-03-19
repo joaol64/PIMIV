@@ -7,6 +7,9 @@ namespace Backend.Services;
 
 public class AuthService
 {
+    private const int MaxNomeEmailLength = 30;
+    private const int MinPasswordLength = 6;
+
     private readonly UserRepository _userRepository;
 
     public AuthService(UserRepository userRepository)
@@ -26,8 +29,25 @@ public class AuthService
             return (false, "Dados inválidos", null);
         }
 
+        var nomeTrim = request.Nome.Trim();
+        if (nomeTrim.Length > MaxNomeEmailLength)
+        {
+            return (false, $"Nome deve ter no máximo {MaxNomeEmailLength} caracteres", null);
+        }
+
+        var emailTrimmed = request.Email.Trim();
+        if (emailTrimmed.Length > MaxNomeEmailLength)
+        {
+            return (false, $"Email deve ter no máximo {MaxNomeEmailLength} caracteres", null);
+        }
+
+        if (request.Senha.Length < MinPasswordLength)
+        {
+            return (false, $"A senha deve ter no mínimo {MinPasswordLength} caracteres", null);
+        }
+
         // Normalizamos o email para manter comparações consistentes (sem diferenciar maiúsculas/minúsculas).
-        var email = request.Email.Trim().ToLowerInvariant();
+        var email = emailTrimmed.ToLowerInvariant();
 
         try
         {
@@ -48,7 +68,7 @@ public class AuthService
 
         var user = new User
         {
-            Nome = request.Nome.Trim(),
+            Nome = nomeTrim,
             Email = email,
             PasswordHash = passwordHash
         };
@@ -85,8 +105,14 @@ public class AuthService
             return (false, "Credenciais inválidas", null);
         }
 
+        var emailTrimmed = request.Email.Trim();
+        if (emailTrimmed.Length > MaxNomeEmailLength || request.Senha.Length < MinPasswordLength)
+        {
+            return (false, "Credenciais inválidas", null);
+        }
+
         // Normalizamos o email para buscar o registro de forma consistente.
-        var email = request.Email.Trim().ToLowerInvariant();
+        var email = emailTrimmed.ToLowerInvariant();
 
         User? user;
         try
