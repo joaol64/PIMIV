@@ -1,6 +1,22 @@
 # Projeto PIM (Backend + Frontend separados)
 
-Sistema simples (iniciante) com:
+Este projeto consiste no desenvolvimento de uma aplicação web simples com foco em acessibilidade, permitindo que usuários realizem cadastro, autenticação e acesso a um conteúdo em vídeo na Língua Brasileira de Sinais (Libras).
+
+A aplicação foi estruturada com separação entre frontend e backend, adotando uma arquitetura em camadas no servidor e comunicação via protocolo HTTP.
+
+Objetivo
+
+Desenvolver um sistema web funcional que:
+
+Permita o cadastro e autenticação de usuários
+
+Disponibilize conteúdo acessível em Libras após o login
+
+Utilize tecnologias modernas de desenvolvimento web
+
+Aplique boas práticas de organização e separação de responsabilidades
+
+Sistema simples com:
 
 - Cadastro de usuário
 - Login
@@ -15,8 +31,7 @@ frontend/  -> HTML, CSS e JavaScript puro (sem frameworks)
 
 Importante:
 
-- O frontend **não** fica dentro do backend (não usamos `wwwroot`).
-- A comunicação é via HTTP (`fetch`).
+- A comunicação entre frontend e backend é realizada por meio de requisições HTTP utilizando a API desenvolvida.
 
 ## Backend (.NET 8 + MongoDB)
 
