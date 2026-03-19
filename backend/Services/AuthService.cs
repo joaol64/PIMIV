@@ -91,7 +91,8 @@ public class AuthService
         {
             Id = user.Id ?? string.Empty,
             Nome = user.Nome,
-            Email = user.Email
+            Email = user.Email,
+            JaViuVideo = user.JaViuVideo
         });
     }
 
@@ -140,8 +141,38 @@ public class AuthService
         {
             Id = user.Id ?? string.Empty,
             Nome = user.Nome,
-            Email = user.Email
+            Email = user.Email,
+            JaViuVideo = user.JaViuVideo
         });
+    }
+
+    public async Task<(bool Ok, string? ErrorMessage, AuthResponse? Data)> MarkVideoAsSeenAsync(string userId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return (false, "Usuário inválido", null);
+        }
+
+        try
+        {
+            var updatedUser = await _userRepository.MarkVideoAsSeenAsync(userId.Trim());
+            if (updatedUser is null)
+            {
+                return (false, "Usuário não encontrado", null);
+            }
+
+            return (true, null, new AuthResponse
+            {
+                Id = updatedUser.Id ?? string.Empty,
+                Nome = updatedUser.Nome,
+                Email = updatedUser.Email,
+                JaViuVideo = updatedUser.JaViuVideo
+            });
+        }
+        catch (MongoException)
+        {
+            return (false, "Erro ao conectar no banco", null);
+        }
     }
 }
 

@@ -73,5 +73,28 @@ public class AuthController : ControllerBase
 
         return Ok(result.Data);
     }
+
+    [HttpPost("video-seen")]
+    public async Task<IActionResult> MarkVideoAsSeen([FromBody] VideoStatusRequest request)
+    {
+        var result = await _authService.MarkVideoAsSeenAsync(request.UserId);
+
+        if (!result.Ok)
+        {
+            if (result.ErrorMessage == "Usuário não encontrado")
+            {
+                return NotFound(new ErrorResponse { Message = result.ErrorMessage });
+            }
+
+            if (result.ErrorMessage == "Erro ao conectar no banco")
+            {
+                return StatusCode(500, new ErrorResponse { Message = result.ErrorMessage });
+            }
+
+            return BadRequest(new ErrorResponse { Message = result.ErrorMessage ?? "Erro" });
+        }
+
+        return Ok(result.Data);
+    }
 }
 

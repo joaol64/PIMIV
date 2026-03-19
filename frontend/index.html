@@ -9,12 +9,15 @@
   <body>
     <main class="container">
       <section class="card">
+        <div class="card-topbar">
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
         <h1>Login</h1>
         <p>Entre com seu email e senha.</p>
 
         <form id="loginForm">
           <label for="email">Email</label>
-          <input id="email" type="email" autocomplete="email" maxlength="60" required />
+          <input id="email" type="email" autocomplete="email" maxlength="30" required />
 
           <label for="senha">Senha</label>
           <input id="senha" type="password" autocomplete="current-password" minlength="6" required />
@@ -29,7 +32,11 @@
         <a class="link" href="register.html">Não tem conta? Cadastre-se</a>
       </section>
     </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
 
+    <script src="js/theme.js"></script>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
   </body>

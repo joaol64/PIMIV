@@ -9,8 +9,11 @@
   <body>
     <main class="container">
       <section class="card">
+        <div class="card-topbar">
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
         <h1>Cadastro</h1>
-        <p>Crie sua conta (nome e email até 30 caracteres; senha com no mínimo 6).</p>
+        <p>Crie sua conta.</p>
 
         <form id="registerForm">
           <label for="nome">Nome</label>
@@ -33,7 +36,11 @@
         <a class="link" href="index.html">Já tem conta? Fazer login</a>
       </section>
     </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
 
+    <script src="js/theme.js"></script>
     <script src="js/api.js"></script>
     <script src="js/register.js"></script>
   </body>

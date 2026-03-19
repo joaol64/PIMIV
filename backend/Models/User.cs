@@ -16,5 +16,8 @@ public class User
     // Guardamos SOMENTE a senha criptografada (hash).
     // Nunca salve senha em texto puro.
     public string PasswordHash { get; set; } = string.Empty;
+
+    // Indica se esta conta já assistiu ao vídeo ao menos uma vez.
+    public bool JaViuVideo { get; set; } = false;
 }
 

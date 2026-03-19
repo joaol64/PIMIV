@@ -57,11 +57,28 @@ public class UserRepository
         return await _users.Find(u => u.Email == email).FirstOrDefaultAsync();
     }
 
+    public async Task<User?> GetByIdAsync(string userId)
+    {
+        return await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+    }
+
     // Insere um novo usuário na collection.
     // A unicidade do email é garantida pelo índice único criado no construtor.
     public async Task CreateAsync(User user)
     {
         await _users.InsertOneAsync(user);
+    }
+
+    public async Task<User?> MarkVideoAsSeenAsync(string userId)
+    {
+        var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+        var update = Builders<User>.Update.Set(u => u.JaViuVideo, true);
+        var options = new FindOneAndUpdateOptions<User>
+        {
+            ReturnDocument = ReturnDocument.After
+        };
+
+        return await _users.FindOneAndUpdateAsync(filter, update, options);
     }
 }
 

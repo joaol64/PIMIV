@@ -10,5 +10,8 @@ public class AuthResponse
 
     // Email do usuário.
     public string Email { get; set; } = string.Empty;
+
+    // Status da conta para indicar se o vídeo já foi visualizado.
+    public bool JaViuVideo { get; set; }
 }
 
