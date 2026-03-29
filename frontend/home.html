@@ -3,29 +3,79 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Home</title>
+    <title>Evento acadêmico — Página inicial</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <main class="container">
-      <section class="card">
+    <main class="container container--home">
+      <section class="card card--home">
         <div class="card-topbar">
           <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
-        </div>
-        <h1 id="welcomeTitle">Bem-vindo</h1>
-        <p>Você está logado. Clique no botão para assistir ao vídeo em Libras.</p>
-        <p id="videoStatusText" class="status-text"></p>
-
-        <div class="home-actions">
-          <button id="showVideoBtn">Assistir vídeo em Libras</button>
-          <button class="danger" id="logoutBtn">Sair</button>
+          <button class="secondary btn-logout-compact" type="button" id="logoutBtn">Sair</button>
         </div>
 
-        <video id="librasVideo" controls>
-          <!-- Placeholder: troque o src para um vídeo real depois -->
-          <source src="video.mp4" type="video/mp4" />
-          Seu navegador não suporta vídeo HTML5.
-        </video>
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html" aria-current="page">Início</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="atividades.html">Atividades</a>
+          <a href="libras.html">Libras</a>
+          <a href="certificado.html">Certificado</a>
+        </nav>
+
+        <p class="home-welcome" id="welcomeLine" aria-live="polite"></p>
+
+        <h1 class="home-event-title" id="eventTitle">Semana de Integração e Acessibilidade</h1>
+        <p class="home-lead">
+          Encontro acadêmico com foco em inclusão, tecnologia e comunicação acessível.
+        </p>
+        <p class="home-description">
+          Participe de atividades, conheça a programação e acompanhe conteúdos em
+          <strong>Língua Brasileira de Sinais (Libras)</strong>. Esta página reúne informações do evento e o vídeo de
+          apresentação acessível.
+        </p>
+
+        <div class="home-cta-row" role="group" aria-label="Ações principais">
+          <a class="home-cta-btn" href="eventos.html">Ver programação</a>
+          <a class="home-cta-btn" href="atividades.html">Ver atividades</a>
+        </div>
+
+        <div class="home-video-block">
+          <h2 class="home-video-heading">Vídeo de apresentação (Libras)</h2>
+          <p class="home-video-note">
+            Legendas e controles nativos do navegador ajudam na visualização. Substitua
+            <code>video.mp4</code> pelo arquivo real do evento, se necessário.
+          </p>
+          <p id="videoStatusText" class="status-text home-video-status"></p>
+          <video id="librasVideo" class="home-video" controls preload="metadata" playsinline>
+            <source src="video.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeo HTML5.
+          </video>
+        </div>
+
+        <section id="programacao" class="home-subsection" tabindex="-1">
+          <h2 class="home-subsection-title">Programação</h2>
+          <p class="home-subsection-intro">
+            Resumo ilustrativo — ajuste datas e títulos conforme o evento real ou conecte à API depois.
+          </p>
+          <ul class="home-schedule">
+            <li><span class="home-schedule-time">09:00</span> — Abertura e boas-vindas</li>
+            <li><span class="home-schedule-time">10:30</span> — Mesa: acessibilidade digital</li>
+            <li><span class="home-schedule-time">14:00</span> — Oficina prática em Libras</li>
+            <li><span class="home-schedule-time">16:30</span> — Encerramento</li>
+          </ul>
+        </section>
+
+        <section id="inscrever" class="home-subsection" tabindex="-1">
+          <h2 class="home-subsection-title">Inscrições</h2>
+          <p>
+            Abra <a href="atividades.html">Atividades</a> (informe o <code>eventoId</code> na URL se a API estiver
+            ativa), depois use <strong>Se inscrever</strong> para ir à página de confirmação, ou veja também
+            <a href="libras.html">conteúdo em Libras</a> e o <a href="certificado.html">certificado</a> de exemplo.
+          </p>
+          <p class="home-muted">
+            API: <code>GET /api/eventos</code>, <code>POST /api/inscricoes</code>.
+          </p>
+        </section>
 
         <div id="message" class="message"></div>
       </section>
@@ -39,4 +89,3 @@
     <script src="js/home.js"></script>
   </body>
 </html>
-

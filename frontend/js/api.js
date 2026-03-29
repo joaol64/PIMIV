@@ -5,6 +5,27 @@
 // - O backend responde JSON.
 const API_URL = "https://pimiv.onrender.com/api";
 
+async function apiGet(path) {
+  const response = await fetch(`${API_URL}${path}`);
+
+  const text = await response.text();
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!response.ok) {
+    const message = data?.message || data?.Message || "Erro ao chamar a API";
+    throw new Error(message);
+  }
+
+  return data;
+}
+
 async function apiPost(path, body) {
   const response = await fetch(`${API_URL}${path}`, {
     method: "POST",

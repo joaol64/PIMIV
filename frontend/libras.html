@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explicação do sistema de eventos acadêmicos em Libras e glossário de termos." />
+    <title>Sistema em Libras — Glossário</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo principal</a>
+
+    <main id="conteudo-principal" class="container container--home" tabindex="-1">
+      <section class="card card--libras">
+        <div class="card-topbar card-topbar--spread">
+          <a class="link eventos-back" href="home.html">← Início</a>
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html">Início</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="atividades.html">Atividades</a>
+          <a href="libras.html" aria-current="page">Libras</a>
+          <a href="certificado.html">Certificado</a>
+        </nav>
+
+        <h1>Sistema de eventos em Libras</h1>
+        <p class="libras-lead">
+          Esta página reúne uma explicação em <strong>Língua Brasileira de Sinais (Libras)</strong> sobre o
+          protótipo e um glossário dos principais termos.
+        </p>
+
+        <section class="libras-secao" aria-labelledby="titulo-video-libras">
+          <h2 id="titulo-video-libras">Explicação do sistema (Libras)</h2>
+          <p class="home-muted">
+            O vídeo abaixo é um <strong>espaço reservado</strong>. Substitua <code>video.mp4</code> por uma
+            gravação em Libras explicando cadastro, eventos, inscrições e certificado. Quando houver arquivo de
+            legendas (<code>.vtt</code>), adicione a tag <code>&lt;track kind="captions"&gt;</code> para reforçar
+            a acessibilidade.
+          </p>
+
+          <div class="libras-video-wrap">
+            <video
+              class="home-video libras-video"
+              controls
+              preload="metadata"
+              playsinline
+              aria-describedby="descricao-video-libras"
+            >
+              <source src="video.mp4" type="video/mp4" />
+              <p>
+                Seu navegador não reproduz vídeo HTML5. Use uma página com transcrição ou link alternativo em
+                Libras.
+              </p>
+            </video>
+          </div>
+          <p id="descricao-video-libras" class="libras-video-descricao">
+            Vídeo de apresentação do sistema em Libras (substituir o arquivo quando disponível).
+          </p>
+        </section>
+
+        <section class="libras-secao" aria-labelledby="titulo-glossario">
+          <h2 id="titulo-glossario">Glossário</h2>
+          <p class="home-muted libras-glossario-intro">
+            Significados dos termos usados neste projeto, em português. Os títulos podem ser associados a sinais em
+            Libras no material em vídeo.
+          </p>
+
+          <dl class="glossario">
+            <div class="glossario-item">
+              <dt>Evento</dt>
+              <dd>
+                Encontro acadêmico organizado (por exemplo, semana de integração ou mostra de trabalhos). No sistema,
+                cada evento tem nome, data e pode reunir várias atividades.
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Inscrição</dt>
+              <dd>
+                Ato de confirmar a participação em uma <strong>atividade</strong> específica de um evento. Após o
+                login, o participante escolhe a atividade e registra a inscrição na API.
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Certificado</dt>
+              <dd>
+                Documento que comprova a participação no evento. Neste protótipo, o texto pode ser visualizado na
+                página e baixado em formato simples (arquivo de texto).
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </section>
+    </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
+
+    <script src="js/theme.js"></script>
+  </body>
+</html>

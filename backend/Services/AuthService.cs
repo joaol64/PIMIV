@@ -7,7 +7,7 @@ namespace Backend.Services;
 
 public class AuthService
 {
-    private const int MaxNomeEmailLength = 30;
+    // Senha: validação mínima (o nome/email usam os limites públicos de <see cref="Usuario"/>).
     private const int MinPasswordLength = 6;
 
     private readonly UserRepository _userRepository;
@@ -30,15 +30,15 @@ public class AuthService
         }
 
         var nomeTrim = request.Nome.Trim();
-        if (nomeTrim.Length > MaxNomeEmailLength)
+        if (nomeTrim.Length > Usuario.MaxNomeLength)
         {
-            return (false, $"Nome deve ter no máximo {MaxNomeEmailLength} caracteres", null);
+            return (false, $"Nome deve ter no máximo {Usuario.MaxNomeLength} caracteres", null);
         }
 
         var emailTrimmed = request.Email.Trim();
-        if (emailTrimmed.Length > MaxNomeEmailLength)
+        if (emailTrimmed.Length > Usuario.MaxEmailLength)
         {
-            return (false, $"Email deve ter no máximo {MaxNomeEmailLength} caracteres", null);
+            return (false, $"Email deve ter no máximo {Usuario.MaxEmailLength} caracteres", null);
         }
 
         if (request.Senha.Length < MinPasswordLength)
@@ -66,12 +66,24 @@ public class AuthService
         // No login, usamos BCrypt.Verify para comparar a senha informada com o hash armazenado.
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Senha);
 
-        var user = new User
+        // Monta a entidade: as propriedades de Usuario/User aplicam validação nos setters.
+        User user;
+        try
         {
-            Nome = nomeTrim,
-            Email = email,
-            PasswordHash = passwordHash
-        };
+            user = new User
+            {
+                Nome = nomeTrim,
+                Email = email,
+                PasswordHash = passwordHash,
+                // Cadastro público sempre cria participante; admin é definido por outro mecanismo.
+                TipoUsuario = TipoUsuario.Participante
+            };
+        }
+        // ArgumentOutOfRangeException também herda de ArgumentException — um catch cobre validações do modelo.
+        catch (ArgumentException ex)
+        {
+            return (false, ex.Message, null);
+        }
 
         try
         {
@@ -92,7 +104,8 @@ public class AuthService
             Id = user.Id ?? string.Empty,
             Nome = user.Nome,
             Email = user.Email,
-            JaViuVideo = user.JaViuVideo
+            JaViuVideo = user.JaViuVideo,
+            TipoUsuario = user.TipoUsuario
         });
     }
 
@@ -107,7 +120,7 @@ public class AuthService
         }
 
         var emailTrimmed = request.Email.Trim();
-        if (emailTrimmed.Length > MaxNomeEmailLength || request.Senha.Length < MinPasswordLength)
+        if (emailTrimmed.Length > Usuario.MaxEmailLength || request.Senha.Length < MinPasswordLength)
         {
             return (false, "Credenciais inválidas", null);
         }
@@ -142,7 +155,8 @@ public class AuthService
             Id = user.Id ?? string.Empty,
             Nome = user.Nome,
             Email = user.Email,
-            JaViuVideo = user.JaViuVideo
+            JaViuVideo = user.JaViuVideo,
+            TipoUsuario = user.TipoUsuario
         });
     }
 
@@ -166,7 +180,8 @@ public class AuthService
                 Id = updatedUser.Id ?? string.Empty,
                 Nome = updatedUser.Nome,
                 Email = updatedUser.Email,
-                JaViuVideo = updatedUser.JaViuVideo
+                JaViuVideo = updatedUser.JaViuVideo,
+                TipoUsuario = updatedUser.TipoUsuario
             });
         }
         catch (MongoException)

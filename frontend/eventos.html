@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eventos</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container container--home">
+      <section class="card">
+        <div class="card-topbar card-topbar--spread">
+          <a class="link eventos-back" href="home.html">← Voltar</a>
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html">Início</a>
+          <a href="eventos.html" aria-current="page">Eventos</a>
+          <a href="atividades.html">Atividades</a>
+          <a href="libras.html">Libras</a>
+          <a href="certificado.html">Certificado</a>
+        </nav>
+
+        <h1>Eventos</h1>
+        <p>Lista de eventos acadêmicos (dados de exemplo — depois você pode ligar ao <code>GET /api/eventos</code>).</p>
+
+        <ul class="eventos-list" id="eventosList">
+          <li class="eventos-item">
+            <h2 class="eventos-nome">Semana de Integração e Acessibilidade</h2>
+            <p class="eventos-data">
+              <time datetime="2026-04-08">08/04/2026</time>
+            </p>
+            <button type="button" class="secondary eventos-detalhe-btn" data-nome="Semana de Integração e Acessibilidade">
+              Ver detalhes
+            </button>
+          </li>
+          <li class="eventos-item">
+            <h2 class="eventos-nome">Mostra de trabalhos de conclusão</h2>
+            <p class="eventos-data">
+              <time datetime="2026-05-20">20/05/2026</time>
+            </p>
+            <button type="button" class="secondary eventos-detalhe-btn" data-nome="Mostra de trabalhos de conclusão">
+              Ver detalhes
+            </button>
+          </li>
+          <li class="eventos-item">
+            <h2 class="eventos-nome">Jornada de pesquisa e extensão</h2>
+            <p class="eventos-data">
+              <time datetime="2026-09-12">12/09/2026</time>
+            </p>
+            <button type="button" class="secondary eventos-detalhe-btn" data-nome="Jornada de pesquisa e extensão">
+              Ver detalhes
+            </button>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/eventos.js"></script>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 using Backend.Config;
+using Backend.Data;
 using Backend.Repositories;
 using Backend.Services;
 
@@ -44,9 +45,21 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(MongoDbSettings.SectionName)
 );
 
-// Repositórios e serviços (camadas)
+// MongoDB compartilhado + repositórios e serviços (camadas)
+builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<EventoRepository>();
+builder.Services.AddSingleton<AtividadeRepository>();
+builder.Services.AddSingleton<ParticipanteRepository>();
+builder.Services.AddSingleton<InscricaoRepository>();
+builder.Services.AddSingleton<CertificadoRepository>();
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSingleton<EventoService>();
+builder.Services.AddSingleton<AtividadeService>();
+builder.Services.AddSingleton<InscricaoService>();
+builder.Services.AddSingleton<CertificadoService>();
+// Cria conta admin na subida, se AdminSeed estiver configurado (ver appsettings.Development.json).
+builder.Services.AddHostedService<AdminSeedHostedService>();
 
 var app = builder.Build();
 

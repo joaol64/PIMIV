@@ -1,3 +1,5 @@
+using Backend.Models;
+
 namespace Backend.DTOs;
 
 public class AuthResponse
@@ -13,5 +15,8 @@ public class AuthResponse
 
     // Status da conta para indicar se o vídeo já foi visualizado.
     public bool JaViuVideo { get; set; }
+
+    /// <summary>Participante (0) ou Administrador (1); o cliente pode usar para exibir menus diferentes.</summary>
+    public TipoUsuario TipoUsuario { get; set; } = TipoUsuario.Participante;
 }
 

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Certificado</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container container--home">
+      <section class="card">
+        <div class="card-topbar card-topbar--spread">
+          <a class="link eventos-back" href="home.html">← Início</a>
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html">Início</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="atividades.html">Atividades</a>
+          <a href="libras.html">Libras</a>
+          <a href="certificado.html" aria-current="page">Certificado</a>
+        </nav>
+
+        <h1>Certificado de participação</h1>
+        <p class="home-muted certificado-intro">Visualização simulada. Use a URL para personalizar, por exemplo:
+          <code>certificado.html?participante=Maria&amp;evento=Semana%20de%20TI</code>
+        </p>
+
+        <article class="certificado-papel" aria-label="Texto do certificado">
+          <p class="certificado-titulo-doc">Certificado de participação</p>
+          <p class="certificado-corpo">
+            Certificamos que <strong id="certNomeParticipante">—</strong> participou do evento
+            <strong id="certNomeEvento">—</strong>, com dedicação e interesse na programação acadêmica proposta.
+          </p>
+          <p class="certificado-data" id="certData">—</p>
+          <p class="certificado-rodape">Documento gerado para fins de demonstração (PIM).</p>
+        </article>
+
+        <div class="row certificado-acoes">
+          <button type="button" id="btnBaixar">Baixar certificado</button>
+        </div>
+      </section>
+    </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/certificado.js"></script>
+  </body>
+</html>

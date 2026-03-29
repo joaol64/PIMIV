@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atividades do evento</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container container--home">
+      <section class="card">
+        <div class="card-topbar card-topbar--spread">
+          <a class="link eventos-back" href="eventos.html">← Eventos</a>
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html">Início</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="atividades.html" aria-current="page">Atividades</a>
+          <a href="libras.html">Libras</a>
+          <a href="certificado.html">Certificado</a>
+        </nav>
+
+        <h1>Atividades</h1>
+        <p class="atividades-intro">
+          Dados de <code>GET /api/eventos/{eventoId}/atividades</code>. Na URL use
+          <code>atividades.html?eventoId=SEU_ID_MONGO</code>. Em cada linha, <strong>Se inscrever</strong> abre
+          <code>inscricao.html</code> para confirmar a inscrição.
+        </p>
+
+        <p id="eventoIdLine" class="atividades-evento-id" aria-live="polite"></p>
+
+        <p id="atividadesLoading" class="message message--inline" hidden>Carregando atividades…</p>
+
+        <ul class="eventos-list atividades-list" id="atividadesList" hidden></ul>
+
+        <p id="atividadesEmpty" class="home-muted atividades-empty" hidden>Nenhuma atividade encontrada para este evento.</p>
+
+        <p id="atividadesMissingParam" class="message message--warn" hidden>
+          Falta o parâmetro <code>eventoId</code> na URL. Exemplo:
+          <code>atividades.html?eventoId=674a1b2c3d4e5f6789012345</code>
+        </p>
+
+        <div id="message" class="message"></div>
+      </section>
+    </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/atividades.js"></script>
+  </body>
+</html>

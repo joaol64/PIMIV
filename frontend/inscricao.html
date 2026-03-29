@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Confirmar inscrição</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container container--home">
+      <section class="card">
+        <div class="card-topbar card-topbar--spread">
+          <a class="link eventos-back" href="home.html">← Início</a>
+          <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegação do protótipo">
+          <a href="home.html">Início</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="atividades.html">Atividades</a>
+          <a href="libras.html">Libras</a>
+          <a href="certificado.html">Certificado</a>
+        </nav>
+
+        <h1>Inscrição</h1>
+
+        <p id="inscricaoResumo" class="inscricao-resumo"></p>
+
+        <p id="inscricaoAviso" class="message message--warn" hidden></p>
+
+        <div class="row inscricao-acoes">
+          <button type="button" id="btnConfirmar">Confirmar inscrição</button>
+        </div>
+
+        <p id="inscricaoSucesso" class="message success" hidden></p>
+        <div id="message" class="message"></div>
+      </section>
+    </main>
+    <footer class="footer-note">
+      Feito por Joao Luiz, apenas um prototipo para o projeto PIM IV.
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/inscricao.js"></script>
+  </body>
+</html>

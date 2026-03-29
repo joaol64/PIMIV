@@ -1,7 +1,6 @@
-// Código específico da página logada (home).
+// Página inicial do evento (usuário logado): vídeo Libras visível + ações de programação/inscrição.
 
-const welcomeTitle = document.getElementById("welcomeTitle");
-const showVideoBtn = document.getElementById("showVideoBtn");
+const welcomeLine = document.getElementById("welcomeLine");
 const logoutBtn = document.getElementById("logoutBtn");
 const videoEl = document.getElementById("librasVideo");
 const messageEl = document.getElementById("message");
@@ -14,33 +13,26 @@ function showMessage(text, type) {
   messageEl.classList.toggle("success", type === "success");
 }
 
-function updateVideoStatusLabel(user) {
+function updateVideoStatusLabel(u) {
   if (!videoStatusText) return;
-  videoStatusText.textContent = user.jaViuVideo
-    ? "Status da conta: video ja visualizado."
-    : "Status da conta: video ainda nao visualizado.";
+  videoStatusText.textContent = u.jaViuVideo
+    ? "Status da conta: vídeo já visualizado."
+    : "Status da conta: vídeo ainda não marcado como visualizado.";
 }
 
 const user = getUserFromLocalStorage();
 if (!user) {
-  // Se alguém abrir home.html direto, sem login, volta para login.
   window.location.href = "index.html";
 } else {
-  welcomeTitle.textContent = `Bem-vindo, ${user.nome}`;
+  welcomeLine.textContent = `Olá, ${user.nome} — você está conectado.`;
   updateVideoStatusLabel(user);
 }
 
-showVideoBtn.addEventListener("click", async () => {
-  // Mostra o vídeo HTML5 na tela.
-  videoEl.classList.add("show");
-
-  videoEl.play(); // 🔥 começa o vídeo
-
-  // Se o arquivo video.mp4 não existir, o navegador mostrará erro no player.
-  // Isso é ok porque é um placeholder (você pode colocar um vídeo real depois).
-  showMessage("Video exibido abaixo.", "success");
-
-  if (!user || user.jaViuVideo) return;
+// Ao dar play no vídeo de apresentação, registra no backend (uma vez) como no fluxo anterior.
+let videoSeenSyncStarted = false;
+videoEl.addEventListener("play", async () => {
+  if (!user || user.jaViuVideo || videoSeenSyncStarted) return;
+  videoSeenSyncStarted = true;
 
   try {
     const updatedUser = await apiPost("/auth/video-seen", { userId: user.id });
@@ -48,11 +40,11 @@ showVideoBtn.addEventListener("click", async () => {
     user.jaViuVideo = updatedUser.jaViuVideo;
     updateVideoStatusLabel(user);
   } catch {
-    showMessage("Nao foi possivel atualizar o status do video agora.", "error");
+    showMessage("Não foi possível atualizar o status do vídeo agora.", "error");
+    videoSeenSyncStarted = false;
   }
 });
 
 logoutBtn.addEventListener("click", () => {
   logout();
 });
-
