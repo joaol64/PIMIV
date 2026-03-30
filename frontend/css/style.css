@@ -72,18 +72,26 @@ body {
   padding: 24px 16px;
 }
 
-/* Conteúdo central ocupa a largura útil; rodapé fica abaixo sem encolher. */
+/* Conteúdo central: respeita .container / .container--home (max-width) e centraliza o card. */
 main.container {
   flex: 1 0 auto;
   width: 100%;
-  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Login, cadastro etc.: card no meio da área útil (a home fica alinhada ao topo por ter muito conteúdo). */
+main.container:not(.container--home) {
+  justify-content: center;
+}
+
 main.container > .card {
   width: 100%;
+}
+
+main.container:not(.container--home) > .card {
+  max-width: 420px;
 }
 
 .container {
@@ -569,10 +577,14 @@ button:disabled {
 
 .home-video {
   width: 100%;
-  margin-top: 4px;
+  max-width: 420px;
+  max-height: min(60vh, 520px);
+  margin: 4px auto 0;
   border-radius: 12px;
   border: 1px solid var(--border);
   display: block;
+  background: #000;
+  object-fit: contain;
 }
 
 .home-subsection {

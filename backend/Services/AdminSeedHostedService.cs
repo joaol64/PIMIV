@@ -28,14 +28,18 @@ public class AdminSeedHostedService : IHostedService
         using var scope = _scopeFactory.CreateScope();
         var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
 
-        // Lê appsettings (AdminSeed) ou variáveis AdminSeed__Email / AdminSeed__Password.
+        // Lê a seção AdminSeed do IConfiguration.
+        // Fallback explícito: se estiver vazio, tenta diretamente variáveis de ambiente.
         var email = _configuration["AdminSeed:Email"]?.Trim();
         var password = _configuration["AdminSeed:Password"];
+        email ??= Environment.GetEnvironmentVariable("AdminSeed__Email")?.Trim();
+        password ??= Environment.GetEnvironmentVariable("AdminSeed__Password");
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
             _logger.LogInformation(
-                "AdminSeed não configurado (email/senha vazios). Nenhuma conta admin automática será criada.");
+                "AdminSeed ausente. Configure AdminSeed:Email/AdminSeed:Password no appsettings.json " +
+                "ou AdminSeed__Email/AdminSeed__Password em variáveis de ambiente.");
             return;
         }
 
@@ -51,6 +55,10 @@ public class AdminSeedHostedService : IHostedService
                     _logger.LogWarning(
                         "Já existe usuário com email {Email}, mas não é Administrador. Ajuste o campo no MongoDB se precisar.",
                         emailNorm);
+                }
+                else
+                {
+                    _logger.LogInformation("Conta administrador já existe para {Email}.", emailNorm);
                 }
 
                 return;
@@ -68,7 +76,7 @@ public class AdminSeedHostedService : IHostedService
 
             await userRepository.CreateAsync(admin);
             _logger.LogInformation(
-                "Conta administrador criada para {Email}. Altere a senha padrão em ambientes reais.",
+                "Conta administrador criada com sucesso para {Email}. Altere a senha padrão em ambientes reais.",
                 emailNorm);
         }
         catch (Exception ex)

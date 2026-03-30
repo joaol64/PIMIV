@@ -5,6 +5,16 @@ using Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Carrega configurações em ordem:
+// 1) appsettings.json (base)
+// 2) appsettings.{Ambiente}.json (sobrescreve no ambiente atual)
+// 3) variáveis de ambiente (maior prioridade)
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 // Controllers = endpoints "tradicionais" (ex: AuthController com /api/auth/register e /api/auth/login)
 builder.Services.AddControllers();
 
@@ -58,7 +68,8 @@ builder.Services.AddSingleton<EventoService>();
 builder.Services.AddSingleton<AtividadeService>();
 builder.Services.AddSingleton<InscricaoService>();
 builder.Services.AddSingleton<CertificadoService>();
-// Cria conta admin na subida, se AdminSeed estiver configurado (ver appsettings.Development.json).
+// Cria conta admin na subida, se AdminSeed estiver configurado
+// (via appsettings.json, appsettings.{Ambiente}.json ou variáveis de ambiente).
 builder.Services.AddHostedService<AdminSeedHostedService>();
 
 var app = builder.Build();
