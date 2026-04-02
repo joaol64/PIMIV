@@ -36,6 +36,10 @@ bld/
 Thumbs.db
 Desktop.ini
 
+# Secrets locais (Mongo, admin seed, etc.)
+backend/.env
+.env
+
 # =========================
 # Frontend
 # =========================

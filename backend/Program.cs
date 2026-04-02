@@ -2,6 +2,21 @@ using Backend.Config;
 using Backend.Data;
 using Backend.Repositories;
 using Backend.Services;
+using DotNetEnv;
+
+// Carrega backend/.env no processo (DATABASE_URL, MongoDbSettings__*, etc.) antes do host ler variáveis.
+foreach (var envPath in new[]
+         {
+             Path.Combine(Directory.GetCurrentDirectory(), ".env"),
+             Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env")),
+         })
+{
+    if (File.Exists(envPath))
+    {
+        Env.Load(envPath);
+        break;
+    }
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,9 +66,17 @@ builder.Services.AddCors(options =>
 //
 // O formato "MongoDbSettings__ConnectionString" (com __) significa:
 // - Se você tem a classe MongoDbSettings { ConnectionString }, o .NET mapeia automaticamente.
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection(MongoDbSettings.SectionName)
-);
+// DATABASE_URL (comum em Render/Heroku) preenche ConnectionString quando appsettings está vazio.
+builder.Services.Configure<MongoDbSettings>(opts =>
+{
+    builder.Configuration.GetSection(MongoDbSettings.SectionName).Bind(opts);
+    if (string.IsNullOrWhiteSpace(opts.ConnectionString))
+    {
+        var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL")?.Trim();
+        if (!string.IsNullOrWhiteSpace(dbUrl))
+            opts.ConnectionString = dbUrl;
+    }
+});
 
 // MongoDB compartilhado + repositórios e serviços (camadas)
 builder.Services.AddSingleton<MongoDbContext>();

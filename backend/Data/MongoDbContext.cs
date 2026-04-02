@@ -19,7 +19,7 @@ public class MongoDbContext
         if (string.IsNullOrWhiteSpace(settings.ConnectionString))
         {
             throw new InvalidOperationException(
-                "MongoDbSettings__ConnectionString não foi configurada nas variáveis de ambiente.");
+                "Configure a conexão MongoDB: MongoDbSettings__ConnectionString, DATABASE_URL ou backend/.env.");
         }
 
         var clientSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
