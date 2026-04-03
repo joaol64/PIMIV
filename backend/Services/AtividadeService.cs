@@ -1,3 +1,4 @@
+using Backend.Helpers;
 using Backend.Models;
 using Backend.Repositories;
 using MongoDB.Driver;
@@ -7,6 +8,13 @@ namespace Backend.Services;
 /// <summary>Cria atividades (somente admin) e lista por evento com LINQ.</summary>
 public class AtividadeService
 {
+    /// <summary>Datas vindas do Mongo costumam ser <see cref="DateTimeKind.Unspecified"/> com valor UTC.</summary>
+    private static DateTime ToUtcComparable(DateTime dt)
+    {
+        if (dt == default) return default;
+        return dt.Kind == DateTimeKind.Utc ? dt : DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+    }
+
     private readonly AtividadeRepository _atividadeRepository;
     private readonly EventoRepository _eventoRepository;
     private readonly UserRepository _userRepository;
@@ -24,7 +32,8 @@ public class AtividadeService
     public async Task<(bool Ok, string? ErrorMessage, Atividade? Atividade)> CriarAsync(
         string usuarioAdministradorId,
         string nome,
-        DateTime data,
+        string dataInicioStr,
+        string dataFimStr,
         string eventoId)
     {
         if (string.IsNullOrWhiteSpace(usuarioAdministradorId))
@@ -40,6 +49,21 @@ public class AtividadeService
         if (string.IsNullOrWhiteSpace(eventoId))
         {
             return (false, "EventoId é obrigatório.", null);
+        }
+
+        if (!ApiDateParsing.TryParseUtc(dataInicioStr, out var inicioUtc, out var errInicio))
+        {
+            return (false, $"Data de início da atividade inválida: {errInicio}", null);
+        }
+
+        if (!ApiDateParsing.TryParseUtc(dataFimStr, out var fimUtc, out var errFim))
+        {
+            return (false, $"Data de término da atividade inválida: {errFim}", null);
+        }
+
+        if (fimUtc < inicioUtc)
+        {
+            return (false, "O término da atividade deve ser igual ou posterior ao início.", null);
         }
 
         try
@@ -61,7 +85,20 @@ public class AtividadeService
                 return (false, "Evento não encontrado.", null);
             }
 
-            var atividade = new Atividade(nome.Trim(), data, eventoId.Trim());
+            var inicioEvt = ToUtcComparable(evento.DataInicioEfetiva);
+            var fimEvt = ToUtcComparable(evento.DataFimEfetiva);
+            if (inicioEvt == default && fimEvt == default)
+            {
+                return (false, "Evento sem período definido. Cadastre início e término do evento.", null);
+            }
+
+            if (inicioUtc < inicioEvt || fimUtc > fimEvt)
+            {
+                return (false, "Início e término da atividade precisam ficar dentro do período do evento.", null);
+            }
+
+            DateTime? dataFimPersist = fimUtc == inicioUtc ? null : fimUtc;
+            var atividade = new Atividade(nome.Trim(), inicioUtc, dataFimPersist, eventoId.Trim());
             await _atividadeRepository.CreateAsync(atividade);
             return (true, null, atividade);
         }

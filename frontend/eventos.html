@@ -23,49 +23,18 @@
         </nav>
 
         <h1>Eventos</h1>
-        <p>Lista de eventos acadêmicos (dados de exemplo — depois você pode ligar ao <code>GET /api/eventos</code>).</p>
+        <p>
+          Lista vinda da API (<code>GET /api/eventos</code>). Cada evento agrupa atividades — use
+          <strong>Ver atividades</strong> para abrir a segunda etapa com o <code>eventoId</code> já selecionado.
+        </p>
 
-        <ul class="eventos-list" id="eventosList">
-          <li class="eventos-item">
-            <div class="eventos-item-top">
-              <h2 class="eventos-nome">Semana de Integração e Acessibilidade</h2>
-              <button type="button" class="secondary eventos-detalhe-btn" data-nome="Semana de Integração e Acessibilidade">
-                Ver detalhes
-              </button>
-            </div>
-            <p class="eventos-meta">Evento acadêmico</p>
-            <p class="eventos-data">
-              <span class="eventos-status">Ativo</span>
-              <time datetime="2026-04-08">08/04/2026</time>
-            </p>
-          </li>
-          <li class="eventos-item">
-            <div class="eventos-item-top">
-              <h2 class="eventos-nome">Mostra de trabalhos de conclusão</h2>
-              <button type="button" class="secondary eventos-detalhe-btn" data-nome="Mostra de trabalhos de conclusão">
-                Ver detalhes
-              </button>
-            </div>
-            <p class="eventos-meta">Evento acadêmico</p>
-            <p class="eventos-data">
-              <span class="eventos-status">Ativo</span>
-              <time datetime="2026-05-20">20/05/2026</time>
-            </p>
-          </li>
-          <li class="eventos-item">
-            <div class="eventos-item-top">
-              <h2 class="eventos-nome">Jornada de pesquisa e extensão</h2>
-              <button type="button" class="secondary eventos-detalhe-btn" data-nome="Jornada de pesquisa e extensão">
-                Ver detalhes
-              </button>
-            </div>
-            <p class="eventos-meta">Evento acadêmico</p>
-            <p class="eventos-data">
-              <span class="eventos-status">Ativo</span>
-              <time datetime="2026-09-12">12/09/2026</time>
-            </p>
-          </li>
-        </ul>
+        <p id="eventosLoading" class="message message--inline" hidden>Carregando eventos…</p>
+
+        <ul class="eventos-list" id="eventosList"></ul>
+
+        <p id="eventosEmpty" class="home-muted" hidden>Nenhum evento cadastrado. Um administrador pode criar eventos pelo botão <strong>Gestão (admin)</strong>.</p>
+
+        <div id="message" class="message"></div>
       </section>
     </main>
     <footer class="footer-note">
@@ -73,6 +42,9 @@
     </footer>
 
     <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dates.js"></script>
+    <script src="js/admin-panel.js"></script>
     <script src="js/eventos.js"></script>
   </body>
 </html>

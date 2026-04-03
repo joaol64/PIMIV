@@ -23,24 +23,34 @@
         </nav>
 
         <h1>Atividades</h1>
-        <p class="atividades-intro">
-          Dados de <code>GET /api/eventos/{eventoId}/atividades</code>. Na URL use
-          <code>atividades.html?eventoId=SEU_ID_MONGO</code>. Em cada linha, <strong>Se inscrever</strong> abre
-          <code>inscricao.html</code> para confirmar a inscrição.
-        </p>
+        <p id="eventoStepHint" class="atividades-intro"></p>
 
-        <p id="eventoIdLine" class="atividades-evento-id" aria-live="polite"></p>
+        <section class="atividades-step" aria-labelledby="atividadesPasso1Titulo">
+          <h2 id="atividadesPasso1Titulo" class="atividades-step-title">1. Escolha o evento</h2>
+          <p class="home-muted atividades-step-desc">
+            Os eventos funcionam como pastas: cada um contém suas atividades (<code>GET /api/eventos</code>).
+          </p>
+          <label for="eventoSelect">Evento</label>
+          <select id="eventoSelect" class="atividades-evento-select" aria-describedby="eventoStepHint"></select>
+        </section>
 
-        <p id="atividadesLoading" class="message message--inline" hidden>Carregando atividades…</p>
+        <section id="atividadesStep2" class="atividades-step atividades-step--2" hidden aria-labelledby="atividadesPasso2Titulo">
+          <h2 id="atividadesPasso2Titulo" class="atividades-step-title">2. Atividades deste evento</h2>
+          <p class="atividades-evento-escolhido">
+            Evento: <strong id="eventoNomeEscolhido"></strong>
+            <button type="button" class="secondary atividades-trocar-evento" id="btnTrocarEvento">Trocar evento</button>
+          </p>
+          <p class="home-muted">
+            Dados de <code>GET /api/eventos/{eventoId}/atividades</code>. <strong>Se inscrever</strong> abre a confirmação
+            em <code>inscricao.html</code>.
+          </p>
 
-        <ul class="eventos-list atividades-list" id="atividadesList" hidden></ul>
+          <p id="atividadesLoading" class="message message--inline" hidden>Carregando atividades…</p>
 
-        <p id="atividadesEmpty" class="home-muted atividades-empty" hidden>Nenhuma atividade encontrada para este evento.</p>
+          <ul class="eventos-list atividades-list" id="atividadesList" hidden></ul>
 
-        <p id="atividadesMissingParam" class="message message--warn" hidden>
-          Falta o parâmetro <code>eventoId</code> na URL. Exemplo:
-          <code>atividades.html?eventoId=674a1b2c3d4e5f6789012345</code>
-        </p>
+          <p id="atividadesEmpty" class="home-muted atividades-empty" hidden>Nenhuma atividade cadastrada neste evento.</p>
+        </section>
 
         <div id="message" class="message"></div>
       </section>
@@ -51,6 +61,8 @@
 
     <script src="js/theme.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/dates.js"></script>
+    <script src="js/admin-panel.js"></script>
     <script src="js/atividades.js"></script>
   </body>
 </html>

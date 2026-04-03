@@ -1,5 +1,6 @@
 using Backend.Config;
 using Backend.Data;
+using Backend.Serialization;
 using Backend.Repositories;
 using Backend.Services;
 using DotNetEnv;
@@ -31,7 +32,14 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 // Controllers = endpoints "tradicionais" (ex: AuthController com /api/auth/register e /api/auth/login)
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
+    opts.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    opts.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    opts.JsonSerializerOptions.Converters.Add(new JsonUtcDateTimeConverter());
+    opts.JsonSerializerOptions.Converters.Add(new JsonNullableUtcDateTimeConverter());
+});
 
 // Swagger ajuda a testar a API no navegador; útil para inspecionar rotas e formatos de request/response.
 builder.Services.AddEndpointsApiExplorer();

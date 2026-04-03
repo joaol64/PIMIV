@@ -659,7 +659,7 @@ video:not(.home-video).show {
   flex-direction: column;
   gap: 6px;
   margin: 0;
-  min-height: 178px;
+  min-height: 220px;
   padding: 16px 16px 14px;
   border-radius: 14px;
   border: 1px solid var(--border);
@@ -705,12 +705,64 @@ video:not(.home-video).show {
   color: var(--muted);
 }
 
+.eventos-item-periodo {
+  margin-top: 4px;
+  padding: 12px 0 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eventos-periodo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.eventos-periodo-label {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.eventos-periodo-value {
+  flex: 1;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.eventos-periodo-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.eventos-inscritos-row {
+  padding-top: 2px;
+}
+
+.atividades-inscritos-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
 .eventos-data {
   margin: auto 0 0;
   padding-top: 10px;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 8px;
   font-size: 14px;
@@ -817,5 +869,183 @@ video:not(.home-video).show {
   body {
     justify-content: center;
   }
+}
+
+/* Select (formulários e escolha de evento) */
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+  font-size: 15px;
+}
+
+select:focus {
+  border-color: rgba(79, 140, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+}
+
+.admin-panel-open-btn {
+  width: auto;
+  min-width: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Modal de gestão (admin) */
+.admin-dialog {
+  width: calc(100% - 32px);
+  max-width: 480px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.admin-dialog::backdrop {
+  background: rgba(6, 10, 18, 0.65);
+}
+
+body[data-theme="light"] .admin-dialog::backdrop {
+  background: rgba(18, 32, 58, 0.35);
+}
+
+.admin-dialog-inner {
+  padding: 18px 18px 20px;
+}
+
+.admin-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.admin-dialog-title {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.admin-dialog-close {
+  width: auto;
+  min-width: 0;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+
+.admin-tab {
+  width: auto;
+  min-width: 0;
+  flex: 1;
+  padding: 10px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  background: transparent;
+  color: var(--muted);
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  box-shadow: none;
+}
+
+.admin-tab:hover {
+  filter: none;
+  transform: none;
+  box-shadow: none;
+  color: var(--text);
+  background: var(--input-bg);
+}
+
+.admin-tab--active {
+  color: var(--text);
+  background: var(--input-bg);
+  box-shadow: none;
+}
+
+.admin-panel-hint {
+  font-size: 14px;
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.admin-date-help {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  background: var(--input-bg);
+  border-radius: 10px;
+  border-left: 3px solid rgba(79, 140, 255, 0.55);
+}
+
+.admin-form .admin-form-msg {
+  margin: 10px 0 12px;
+  min-height: 1.2em;
+}
+
+.admin-form button[type="submit"] {
+  margin-top: 4px;
+}
+
+/* Atividades: passos evento → lista */
+.atividades-step-title {
+  font-size: 1.05rem;
+  margin: 20px 0 8px;
+}
+
+.atividades-step-desc {
+  margin-bottom: 8px;
+}
+
+.atividades-evento-escolhido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.atividades-trocar-evento {
+  width: auto;
+  min-width: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.login-libras-block {
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.login-libras-video {
+  margin-top: 8px;
+}
+
+.admin-atividade-range-hint {
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+.admin-form label {
+  margin-top: 4px;
 }
 

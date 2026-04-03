@@ -11,7 +11,6 @@ public class Evento
 {
     private string? _id;
     private string _nome = string.Empty;
-    private DateTime _data;
 
     /// <summary>Identificador gerado pelo MongoDB.</summary>
     [BsonId]
@@ -29,22 +28,36 @@ public class Evento
         set => _nome = value ?? string.Empty;
     }
 
-    /// <summary>Data de referência do evento (armazenada como o driver serializar; em geral use UTC em produção).</summary>
-    public DateTime Data
-    {
-        get => _data;
-        set => _data = value;
-    }
+    /// <summary>Início do período em que o evento está ativo (gravar em UTC).</summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime DataInicio { get; set; }
 
-    /// <summary>Construtor vazio: necessário para o driver MongoDB desserializar documentos.</summary>
+    /// <summary>Término do período em que o evento está ativo (gravar em UTC).</summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime DataFim { get; set; }
+
+    /// <summary>Campo legado em documentos antigos (única data de referência).</summary>
+    [BsonIgnoreIfNull]
+    public DateTime? Data { get; set; }
+
+    /// <summary>Início efetivo para ordenação, validação e certificados.</summary>
+    [BsonIgnore]
+    public DateTime DataInicioEfetiva =>
+        DataInicio != default ? DataInicio : Data ?? default;
+
+    /// <summary>Término efetivo; se só existir <see cref="Data"/>, usa o mesmo instante.</summary>
+    [BsonIgnore]
+    public DateTime DataFimEfetiva =>
+        DataFim != default ? DataFim : Data ?? DataInicioEfetiva;
+
     public Evento()
     {
     }
 
-    /// <summary>Construtor conveniente para criar evento em memória antes de inserir no banco.</summary>
-    public Evento(string nome, DateTime data)
+    public Evento(string nome, DateTime dataInicio, DateTime dataFim)
     {
         Nome = nome;
-        Data = data;
+        DataInicio = dataInicio;
+        DataFim = dataFim;
     }
 }

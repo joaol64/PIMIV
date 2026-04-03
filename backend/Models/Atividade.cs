@@ -28,11 +28,21 @@ public class Atividade
         set => _nome = value ?? string.Empty;
     }
 
+    /// <summary>Início da atividade (UTC).</summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime Data
     {
         get => _data;
         set => _data = value;
     }
+
+    /// <summary>Término da atividade (UTC). Ausente em documentos antigos: usa o mesmo instante de <see cref="Data"/>.</summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [BsonIgnoreIfNull]
+    public DateTime? DataFim { get; set; }
+
+    [BsonIgnore]
+    public DateTime DataFimEfetiva => DataFim ?? Data;
 
     /// <summary>Id (ObjectId string) do <see cref="Evento"/> ao qual esta atividade pertence.</summary>
     public string EventoId
@@ -45,10 +55,11 @@ public class Atividade
     {
     }
 
-    public Atividade(string nome, DateTime data, string eventoId)
+    public Atividade(string nome, DateTime dataInicio, DateTime? dataFim, string eventoId)
     {
         Nome = nome;
-        Data = data;
+        Data = dataInicio;
+        DataFim = dataFim;
         EventoId = eventoId;
     }
 }

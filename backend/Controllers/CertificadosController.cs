@@ -103,7 +103,7 @@ public class CertificadosController : ControllerBase
             var conteudo = _certificadoService.GerarCertificado(
                 participante.Nome,
                 evento.Nome,
-                evento.Data,
+                evento.DataInicioEfetiva,
                 request.ComoHtml);
 
             var certificado = new Certificado(

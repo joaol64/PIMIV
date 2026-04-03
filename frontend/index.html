@@ -7,13 +7,25 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <main class="container">
+    <main class="container container--home">
       <section class="card">
         <div class="card-topbar">
           <button class="secondary theme-toggle" type="button" id="themeToggleBtn">Tema claro</button>
         </div>
         <h1>Login</h1>
         <p>Entre com seu email e senha.</p>
+
+        <section class="login-libras-block" aria-labelledby="loginLibrasTitle">
+          <h2 id="loginLibrasTitle" class="home-video-heading">Como fazer login (Libras)</h2>
+          <p class="home-video-note">
+            Vídeo em Língua Brasileira de Sinais com orientações para acessar o sistema (conteúdo placeholder até o vídeo
+            definitivo).
+          </p>
+          <video class="home-video login-libras-video" controls preload="metadata" playsinline>
+            <source src="Video2.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeo HTML5.
+          </video>
+        </section>
 
         <form id="loginForm">
           <label for="email">Email</label>
@@ -41,4 +53,3 @@
     <script src="js/login.js"></script>
   </body>
 </html>
-

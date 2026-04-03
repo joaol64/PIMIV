@@ -32,6 +32,48 @@ public class InscricaoRepository
         return count > 0;
     }
 
+    public async Task<long> CountByAtividadeAsync(string atividadeId)
+    {
+        return await _inscricoes.CountDocumentsAsync(i => i.AtividadeId == atividadeId);
+    }
+
+    /// <summary>Total de inscrições cujo <see cref="Inscricao.AtividadeId"/> está na lista.</summary>
+    public async Task<long> CountByAtividadesAsync(IReadOnlyCollection<string> atividadeIds)
+    {
+        if (atividadeIds == null || atividadeIds.Count == 0)
+        {
+            return 0;
+        }
+
+        var ids = atividadeIds.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return 0;
+        }
+
+        var filter = Builders<Inscricao>.Filter.In(i => i.AtividadeId, ids);
+        return await _inscricoes.CountDocumentsAsync(filter);
+    }
+
+    /// <summary>Quantidade de participantes distintos com inscrição em qualquer atividade da lista.</summary>
+    public async Task<long> CountParticipantesDistintosPorAtividadesAsync(IReadOnlyCollection<string> atividadeIds)
+    {
+        if (atividadeIds == null || atividadeIds.Count == 0)
+        {
+            return 0;
+        }
+
+        var ids = atividadeIds.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return 0;
+        }
+
+        var filter = Builders<Inscricao>.Filter.In(i => i.AtividadeId, ids);
+        var list = await _inscricoes.Find(filter).ToListAsync();
+        return list.Select(i => i.ParticipanteId).Distinct().LongCount();
+    }
+
     public async Task<List<Inscricao>> ListarTodosAsync()
     {
         return await _inscricoes.Find(_ => true).ToListAsync();

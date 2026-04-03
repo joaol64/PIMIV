@@ -29,4 +29,16 @@ public class AtividadeRepository
     {
         return await _atividades.Find(_ => true).ToListAsync();
     }
+
+    /// <summary>Ids das atividades vinculadas ao evento (para contagens de inscrição).</summary>
+    public async Task<List<string>> ListarIdsPorEventoAsync(string eventoId)
+    {
+        var id = eventoId.Trim();
+        var lista = await _atividades.Find(a => a.EventoId == id).ToListAsync();
+        return lista
+            .Select(a => a.Id)
+            .Where(id => !string.IsNullOrEmpty(id))
+            .Select(id => id!)
+            .ToList();
+    }
 }

@@ -55,10 +55,16 @@ public class AtividadesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar([FromBody] CreateAtividadeRequest request)
     {
+        var dataInicio = !string.IsNullOrWhiteSpace(request.DataInicio)
+            ? request.DataInicio
+            : request.Data ?? string.Empty;
+        var dataFim = !string.IsNullOrWhiteSpace(request.DataFim) ? request.DataFim : dataInicio;
+
         var result = await _atividadeService.CriarAsync(
             request.UsuarioId,
             request.Nome,
-            request.Data,
+            dataInicio,
+            dataFim,
             request.EventoId);
 
         if (!result.Ok)

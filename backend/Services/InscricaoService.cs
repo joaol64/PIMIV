@@ -10,17 +10,20 @@ public class InscricaoService
     private readonly UserRepository _userRepository;
     private readonly ParticipanteRepository _participanteRepository;
     private readonly AtividadeRepository _atividadeRepository;
+    private readonly EventoRepository _eventoRepository;
     private readonly InscricaoRepository _inscricaoRepository;
 
     public InscricaoService(
         UserRepository userRepository,
         ParticipanteRepository participanteRepository,
         AtividadeRepository atividadeRepository,
+        EventoRepository eventoRepository,
         InscricaoRepository inscricaoRepository)
     {
         _userRepository = userRepository;
         _participanteRepository = participanteRepository;
         _atividadeRepository = atividadeRepository;
+        _eventoRepository = eventoRepository;
         _inscricaoRepository = inscricaoRepository;
     }
 
@@ -146,6 +149,75 @@ public class InscricaoService
         catch (Exception)
         {
             return (false, "Erro inesperado ao buscar inscrição.", null);
+        }
+    }
+
+    /// <summary>Quantas inscrições existem na atividade (no máximo uma por participante).</summary>
+    public async Task<(bool Ok, string? ErrorMessage, long Total)> ContarPorAtividadeAsync(string atividadeId)
+    {
+        if (string.IsNullOrWhiteSpace(atividadeId))
+        {
+            return (false, "AtividadeId é obrigatório.", 0);
+        }
+
+        try
+        {
+            var atividade = await _atividadeRepository.GetByIdAsync(atividadeId.Trim());
+            if (atividade is null)
+            {
+                return (false, "Atividade não encontrada.", 0);
+            }
+
+            var aid = atividade.Id ?? string.Empty;
+            var total = await _inscricaoRepository.CountByAtividadeAsync(aid);
+            return (true, null, total);
+        }
+        catch (MongoException)
+        {
+            return (false, "Erro ao acessar o banco de dados.", 0);
+        }
+        catch (Exception)
+        {
+            return (false, "Erro inesperado ao contar inscrições.", 0);
+        }
+    }
+
+    /// <summary>
+    /// Agrega inscrições de todas as atividades do evento: total de linhas e participantes distintos.
+    /// </summary>
+    public async Task<(bool Ok, string? ErrorMessage, long TotalInscricoes, long ParticipantesDistintos)> ContarPorEventoAsync(
+        string eventoId)
+    {
+        if (string.IsNullOrWhiteSpace(eventoId))
+        {
+            return (false, "EventoId é obrigatório.", 0, 0);
+        }
+
+        try
+        {
+            var evento = await _eventoRepository.GetByIdAsync(eventoId.Trim());
+            if (evento is null)
+            {
+                return (false, "Evento não encontrado.", 0, 0);
+            }
+
+            var idsAtividades = await _atividadeRepository.ListarIdsPorEventoAsync(evento.Id!);
+            if (idsAtividades.Count == 0)
+            {
+                return (true, null, 0, 0);
+            }
+
+            var total = await _inscricaoRepository.CountByAtividadesAsync(idsAtividades);
+            var distintos = await _inscricaoRepository.CountParticipantesDistintosPorAtividadesAsync(idsAtividades);
+            return (true, null, total, distintos);
+        }
+        catch (MongoException)
+        {
+            return (false, "Erro ao acessar o banco de dados.", 0, 0);
+        }
+        catch (Exception)
+        {
+            return (false, "Erro inesperado ao contar inscrições.", 0, 0);
         }
     }
 }

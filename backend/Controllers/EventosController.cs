@@ -57,7 +57,11 @@ public class EventosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar([FromBody] CreateEventoRequest request)
     {
-        var result = await _eventoService.CriarAsync(request.UsuarioId, request.Nome, request.Data);
+        var result = await _eventoService.CriarAsync(
+            request.UsuarioId,
+            request.Nome,
+            request.DataInicio,
+            request.DataFim);
 
         if (!result.Ok)
         {

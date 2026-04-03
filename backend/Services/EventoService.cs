@@ -1,3 +1,4 @@
+using Backend.Helpers;
 using Backend.Models;
 using Backend.Repositories;
 using MongoDB.Driver;
@@ -22,7 +23,8 @@ public class EventoService
     public async Task<(bool Ok, string? ErrorMessage, Evento? Evento)> CriarAsync(
         string usuarioAdministradorId,
         string nome,
-        DateTime data)
+        string dataInicioStr,
+        string dataFimStr)
     {
         if (string.IsNullOrWhiteSpace(usuarioAdministradorId))
         {
@@ -32,6 +34,21 @@ public class EventoService
         if (string.IsNullOrWhiteSpace(nome))
         {
             return (false, "Nome do evento é obrigatório.", null);
+        }
+
+        if (!ApiDateParsing.TryParseUtc(dataInicioStr, out var inicioUtc, out var errIni))
+        {
+            return (false, $"Data de início inválida: {errIni}", null);
+        }
+
+        if (!ApiDateParsing.TryParseUtc(dataFimStr, out var fimUtc, out var errFim))
+        {
+            return (false, $"Data de término inválida: {errFim}", null);
+        }
+
+        if (fimUtc < inicioUtc)
+        {
+            return (false, "A data de término deve ser posterior ou igual à data de início.", null);
         }
 
         try
@@ -47,7 +64,7 @@ public class EventoService
                 return (false, "Apenas administradores podem criar eventos.", null);
             }
 
-            var evento = new Evento(nome.Trim(), data);
+            var evento = new Evento(nome.Trim(), inicioUtc, fimUtc);
             await _eventoRepository.CreateAsync(evento);
             return (true, null, evento);
         }
@@ -61,14 +78,13 @@ public class EventoService
         }
     }
 
-    /// <summary>Lista todos os eventos ordenados por data (LINQ).</summary>
+    /// <summary>Lista todos os eventos ordenados pelo início do período (LINQ).</summary>
     public async Task<(bool Ok, string? ErrorMessage, List<Evento> Eventos)> ListarTodosAsync()
     {
         try
         {
             var todos = await _eventoRepository.ListarTodosAsync();
-            // Ordenação em memória com LINQ (didático; volumes grandes usariam sort no MongoDB).
-            var ordenados = todos.OrderBy(e => e.Data).ToList();
+            var ordenados = todos.OrderBy(e => e.DataInicioEfetiva).ToList();
             return (true, null, ordenados);
         }
         catch (MongoException)
