@@ -8,6 +8,8 @@ namespace Backend.Services;
 /// <summary>Cria atividades (somente admin) e lista por evento com LINQ.</summary>
 public class AtividadeService
 {
+    private const int DescricaoMaxLength = 2000;
+
     /// <summary>Datas vindas do Mongo costumam ser <see cref="DateTimeKind.Unspecified"/> com valor UTC.</summary>
     private static DateTime ToUtcComparable(DateTime dt)
     {
@@ -34,7 +36,8 @@ public class AtividadeService
         string nome,
         string dataInicioStr,
         string dataFimStr,
-        string eventoId)
+        string eventoId,
+        string? descricao)
     {
         if (string.IsNullOrWhiteSpace(usuarioAdministradorId))
         {
@@ -49,6 +52,12 @@ public class AtividadeService
         if (string.IsNullOrWhiteSpace(eventoId))
         {
             return (false, "EventoId é obrigatório.", null);
+        }
+
+        var descNorm = string.IsNullOrWhiteSpace(descricao) ? null : descricao.Trim();
+        if (descNorm != null && descNorm.Length > DescricaoMaxLength)
+        {
+            return (false, $"A descrição pode ter no máximo {DescricaoMaxLength} caracteres.", null);
         }
 
         if (!ApiDateParsing.TryParseUtc(dataInicioStr, out var inicioUtc, out var errInicio))
@@ -98,7 +107,7 @@ public class AtividadeService
             }
 
             DateTime? dataFimPersist = fimUtc == inicioUtc ? null : fimUtc;
-            var atividade = new Atividade(nome.Trim(), inicioUtc, dataFimPersist, eventoId.Trim());
+            var atividade = new Atividade(nome.Trim(), inicioUtc, dataFimPersist, eventoId.Trim(), descNorm);
             await _atividadeRepository.CreateAsync(atividade);
             return (true, null, atividade);
         }

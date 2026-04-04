@@ -11,5 +11,13 @@ public class CertificadoGeradoResponse
 
     public string NomeEvento { get; set; } = string.Empty;
 
+    public string NomeParticipante { get; set; } = string.Empty;
+
+    /// <summary>Quantidade de eventos distintos com ao menos uma inscrição.</summary>
+    public int TotalEventos { get; set; }
+
+    /// <summary>Quantidade de atividades distintas em que há inscrição.</summary>
+    public int TotalAtividades { get; set; }
+
     public string Conteudo { get; set; } = string.Empty;
 }

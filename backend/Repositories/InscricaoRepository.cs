@@ -74,6 +74,12 @@ public class InscricaoRepository
         return list.Select(i => i.ParticipanteId).Distinct().LongCount();
     }
 
+    public async Task<List<Inscricao>> ListarPorParticipanteAsync(string participanteId)
+    {
+        var pid = participanteId.Trim();
+        return await _inscricoes.Find(i => i.ParticipanteId == pid).ToListAsync();
+    }
+
     public async Task<List<Inscricao>> ListarTodosAsync()
     {
         return await _inscricoes.Find(_ => true).ToListAsync();

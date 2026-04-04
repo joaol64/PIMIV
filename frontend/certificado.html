@@ -23,22 +23,29 @@
         </nav>
 
         <h1>Certificado de participação</h1>
-        <p class="home-muted certificado-intro">Visualização simulada. Use a URL para personalizar, por exemplo:
-          <code>certificado.html?participante=Maria&amp;evento=Semana%20de%20TI</code>
+        <p class="home-muted certificado-intro">
+          O certificado só é emitido se você estiver logado e tiver <strong>ao menos uma inscrição</strong> em
+          atividades. Os números de eventos e atividades vêm das suas inscrições reais na API.
         </p>
 
-        <article class="certificado-papel" aria-label="Texto do certificado">
-          <p class="certificado-titulo-doc">Certificado de participação</p>
-          <p class="certificado-corpo">
-            Certificamos que <strong id="certNomeParticipante">—</strong> participou do evento
-            <strong id="certNomeEvento">—</strong>, com dedicação e interesse na programação acadêmica proposta.
-          </p>
-          <p class="certificado-data" id="certData">—</p>
-          <p class="certificado-rodape">Documento gerado para fins de demonstração (PIM).</p>
-        </article>
+        <p id="certStatus" class="message message--inline certificado-status" hidden></p>
 
-        <div class="row certificado-acoes">
-          <button type="button" id="btnBaixar">Baixar certificado</button>
+        <div id="certificadoWrapper" class="certificado-wrapper" hidden>
+          <article class="certificado-papel" aria-label="Texto do certificado">
+            <p class="certificado-titulo-doc">Certificado de participação</p>
+            <p class="certificado-corpo">
+              Certificamos que <strong id="certNomeParticipante">—</strong> possui inscrições confirmadas na
+              plataforma, totalizando participação em
+              <strong id="certResumoInscricoes">—</strong>, com dedicação e interesse na programação acadêmica
+              proposta.
+            </p>
+            <p class="certificado-data" id="certData">—</p>
+            <p class="certificado-rodape">Não é um certificado oficial apenas um prototipo para o projeto PIM IV.</p>
+          </article>
+
+          <div class="row certificado-acoes">
+            <button type="button" id="btnBaixar">Baixar certificado (.txt)</button>
+          </div>
         </div>
       </section>
     </main>

@@ -19,14 +19,27 @@ function eventoPeriodoIso(e) {
 
 /**
  * Interpreta texto digitado pelo admin (horário local do navegador).
- * Aceita: AAAA-MM-DD HH:mm  ou  DD/MM/AAAA HH:mm (24h).
+ * Aceita: DD/MM/AAAA HH:mm (preferencial) ou AAAA-MM-DD HH:mm (colagem legada).
  */
 function adminParseDataDigitada(s) {
   if (!s || typeof s !== "string") return null;
   const t = s.trim().replace(/\s+/g, " ");
   if (!t) return null;
 
-  let m = /^(\d{4})-(\d{2})-(\d{2})[T\s](\d{1,2}):(\d{2})$/.exec(t);
+  let m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})$/.exec(t);
+  if (m) {
+    const day = Number(m[1]);
+    const month = Number(m[2]) - 1;
+    const year = Number(m[3]);
+    const h = Number(m[4]);
+    const min = Number(m[5]);
+    const d = new Date(year, month, day, h, min, 0, 0);
+    if (Number.isNaN(d.getTime())) return null;
+    if (d.getFullYear() !== year || d.getMonth() !== month || d.getDate() !== day) return null;
+    return d;
+  }
+
+  m = /^(\d{4})-(\d{2})-(\d{2})[T\s](\d{1,2}):(\d{2})$/.exec(t);
   if (m) {
     const d = new Date(
       Number(m[1]),
@@ -40,46 +53,70 @@ function adminParseDataDigitada(s) {
     return Number.isNaN(d.getTime()) ? null : d;
   }
 
-  m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})$/.exec(t);
-  if (m) {
-    const day = Number(m[1]);
-    const month = Number(m[2]) - 1;
-    const year = Number(m[3]);
-    const h = Number(m[4]);
-    const min = Number(m[5]);
-    const d = new Date(year, month, day, h, min, 0, 0);
-    if (Number.isNaN(d.getTime())) return null;
-    if (d.getFullYear() !== year || d.getMonth() !== month || d.getDate() !== day) return null;
-    return d;
-  }
-
   return null;
 }
 
 /** Mensagem curta quando a data não pôde ser interpretada. */
 function adminMsgFormatoData() {
-  return "Data ou hora inválida. Ex.: 2026-04-08 09:00, 202604080900 ou 08/04/2026 09:00.";
+  return "Data ou hora inválida. Ex.: 08/04/2026 09:00 ou 12 números (DD MM AAAA HH mm). Também aceita colar AAAA-MM-DD HH:mm.";
 }
 
 const ADMIN_DATE_HELP =
-  "Datas: digite só números (máscara automática) ou cole no formato DD/MM/AAAA HH:mm.";
+  "Datas em dia/mês/ano: digite só números (ordem DD MM AAAA HH mm, máscara com barras) ou cole DD/MM/AAAA HH:mm.";
 
-/** Comprimento fixo do texto exibido: AAAA-MM-DD HH:mm */
+/** Comprimento máximo do texto exibido: DD/MM/AAAA HH:mm */
 const ADMIN_DATA_MAX_LEN = 16;
 
-function adminFormatFromDate(d) {
+/** Formata para exibição no padrão brasileiro (dia/mês/ano, 24h). */
+function adminFormatFromDateBr(d) {
   const p2 = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+  return `${p2(d.getDate())}/${p2(d.getMonth() + 1)}/${d.getFullYear()} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
 }
 
-/** Até 12 dígitos: AAAAMMDDHHmm → AAAA-MM-DD HH:mm (durante a digitação). */
-function adminDigitsToIsoMask(digits) {
+/**
+ * Interpreta 12 dígitos: primeiro tenta DD MM YYYY HH mm; se data inválida, AAAAMMDDHHmm (legado).
+ */
+function adminParseDozeDigitos(digits) {
+  if (digits.length !== 12) return null;
+  const day = Number(digits.slice(0, 2));
+  const month = Number(digits.slice(2, 4));
+  const year = Number(digits.slice(4, 8));
+  const h = Number(digits.slice(8, 10));
+  const min = Number(digits.slice(10, 12));
+  let d = new Date(year, month - 1, day, h, min, 0, 0);
+  if (
+    !Number.isNaN(d.getTime()) &&
+    d.getFullYear() === year &&
+    d.getMonth() === month - 1 &&
+    d.getDate() === day
+  ) {
+    return d;
+  }
+  const y = Number(digits.slice(0, 4));
+  const mo = Number(digits.slice(4, 6));
+  const da = Number(digits.slice(6, 8));
+  const hh = Number(digits.slice(8, 10));
+  const mi = Number(digits.slice(10, 12));
+  d = new Date(y, mo - 1, da, hh, mi, 0, 0);
+  if (
+    !Number.isNaN(d.getTime()) &&
+    d.getFullYear() === y &&
+    d.getMonth() === mo - 1 &&
+    d.getDate() === da
+  ) {
+    return d;
+  }
+  return null;
+}
+
+/** Até 12 dígitos na ordem DD MM AAAA HH mm → DD/MM/AAAA HH:mm (durante a digitação). */
+function adminDigitsToBrMask(digits) {
   const d = digits.replace(/\D/g, "").slice(0, 12);
   if (!d) return "";
-  let out = d.slice(0, 4);
-  if (d.length >= 5) out += "-" + d.slice(4, 6);
-  if (d.length >= 7) out += "-" + d.slice(6, 8);
-  if (d.length >= 9) out += " " + d.slice(8, 10);
+  let out = d.slice(0, Math.min(2, d.length));
+  if (d.length >= 3) out += "/" + d.slice(2, Math.min(4, d.length));
+  if (d.length >= 5) out += "/" + d.slice(4, Math.min(8, d.length));
+  if (d.length >= 9) out += " " + d.slice(8, Math.min(10, d.length));
   if (d.length >= 11) out += ":" + d.slice(10, 12);
   return out;
 }
@@ -89,12 +126,12 @@ function adminApplyDateFieldInput(el) {
   if (t) {
     const p = adminParseDataDigitada(t);
     if (p) {
-      el.value = adminFormatFromDate(p);
+      el.value = adminFormatFromDateBr(p);
       return;
     }
   }
   const digits = el.value.replace(/\D/g, "").slice(0, 12);
-  el.value = adminDigitsToIsoMask(digits);
+  el.value = adminDigitsToBrMask(digits);
 }
 
 function adminNormalizeDateFieldBlur(el) {
@@ -104,18 +141,21 @@ function adminNormalizeDateFieldBlur(el) {
   if (!p) {
     const digits = t.replace(/\D/g, "");
     if (digits.length === 12) {
-      t = adminDigitsToIsoMask(digits);
-      p = adminParseDataDigitada(t);
+      p = adminParseDozeDigitos(digits);
     }
   }
-  if (p) el.value = adminFormatFromDate(p);
+  if (p) el.value = adminFormatFromDateBr(p);
 }
 
-/** Converte o texto do campo em ISO UTC para o JSON (parse BR/ISO + fallback Date.parse). */
+/** Converte o texto do campo em ISO UTC para o JSON (parse BR/ISO + 12 dígitos + Date.parse). */
 function adminDateToIsoForApi(raw) {
   const s = String(raw ?? "").trim();
   if (!s) return null;
   let d = adminParseDataDigitada(s);
+  if (!d) {
+    const digits = s.replace(/\D/g, "");
+    if (digits.length === 12) d = adminParseDozeDigitos(digits);
+  }
   if (!d) {
     const ms = Date.parse(s);
     if (!Number.isNaN(ms)) {
@@ -210,9 +250,9 @@ function initAdminPanel() {
             <label for="adminEventoNome">Nome do evento</label>
             <input id="adminEventoNome" name="nome" type="text" required maxlength="120" autocomplete="off" />
             <label for="adminEventoDataInicio">Data e hora de início</label>
-            <input id="adminEventoDataInicio" name="dataInicio" type="text" required spellcheck="false" placeholder="Ex.: 2026-04-08 09:00" title="Até 12 números ou DD/MM/AAAA HH:mm" />
+            <input id="adminEventoDataInicio" name="dataInicio" type="text" required spellcheck="false" placeholder="Ex.: 08/04/2026 09:00" title="DD/MM/AAAA HH:mm ou 12 números (DD MM AAAA HH mm)" />
             <label for="adminEventoDataFim">Data e hora de término</label>
-            <input id="adminEventoDataFim" name="dataFim" type="text" required spellcheck="false" placeholder="Ex.: 2026-04-10 18:00" title="Até 12 números ou DD/MM/AAAA HH:mm" />
+            <input id="adminEventoDataFim" name="dataFim" type="text" required spellcheck="false" placeholder="Ex.: 10/04/2026 18:00" title="DD/MM/AAAA HH:mm ou 12 números (DD MM AAAA HH mm)" />
             <p id="adminEventoMsg" class="message admin-form-msg" role="status"></p>
             <button type="submit">Criar evento</button>
           </form>
@@ -225,10 +265,13 @@ function initAdminPanel() {
             <select id="adminAtividadeEventoId" name="eventoId" required></select>
             <label for="adminAtividadeNome">Nome da atividade</label>
             <input id="adminAtividadeNome" name="nome" type="text" required maxlength="120" autocomplete="off" />
+            <label for="adminAtividadeDescricao">Descrição <span class="admin-optional-label">(opcional)</span></label>
+            <textarea id="adminAtividadeDescricao" name="descricao" class="admin-atividade-descricao" maxlength="2000" rows="4" spellcheck="true" placeholder="Detalhes da atividade para quem vai se inscrever…" aria-describedby="adminAtividadeDescricaoHint"></textarea>
+            <p id="adminAtividadeDescricaoHint" class="admin-textarea-resize-hint">Altura ajustável: arraste o canto inferior direito. O tamanho inicial acompanha a tela.</p>
             <label for="adminAtividadeDataInicio">Data e hora de início</label>
-            <input id="adminAtividadeDataInicio" name="dataInicio" type="text" required spellcheck="false" placeholder="Ex.: 2026-04-09 14:00" title="Até 12 números ou DD/MM/AAAA HH:mm" />
+            <input id="adminAtividadeDataInicio" name="dataInicio" type="text" required spellcheck="false" placeholder="Ex.: 09/04/2026 14:00" title="DD/MM/AAAA HH:mm ou 12 números (DD MM AAAA HH mm)" />
             <label for="adminAtividadeDataFim">Data e hora de término</label>
-            <input id="adminAtividadeDataFim" name="dataFim" type="text" required spellcheck="false" placeholder="Ex.: 2026-04-09 15:30" title="Até 12 números ou DD/MM/AAAA HH:mm" />
+            <input id="adminAtividadeDataFim" name="dataFim" type="text" required spellcheck="false" placeholder="Ex.: 09/04/2026 15:30" title="DD/MM/AAAA HH:mm ou 12 números (DD MM AAAA HH mm)" />
             <p id="adminAtividadeHint" class="admin-panel-hint admin-atividade-range-hint" hidden></p>
             <p id="adminAtividadeMsg" class="message admin-form-msg" role="status"></p>
             <button type="submit">Criar atividade</button>
@@ -418,15 +461,19 @@ function initAdminPanel() {
     showFormMsg(msgAtividade, "Salvando…", null);
     msgAtividade.classList.add("show");
     try {
+      const descricao = dialog.querySelector("#adminAtividadeDescricao")?.value?.trim() || "";
       await apiPost("/atividades", {
         usuarioId: user.id,
         eventoId,
         nome,
+        descricao: descricao || undefined,
         dataInicio: diIso,
         dataFim: dfIso,
       });
       showFormMsg(msgAtividade, "Atividade criada com sucesso.", "success");
       dialog.querySelector("#adminAtividadeNome").value = "";
+      const taDesc = dialog.querySelector("#adminAtividadeDescricao");
+      if (taDesc) taDesc.value = "";
       inputAtividadeDataInicio.value = "";
       inputAtividadeDataFim.value = "";
       await refreshEventoSelect();

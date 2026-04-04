@@ -65,7 +65,8 @@ public class AtividadesController : ControllerBase
             request.Nome,
             dataInicio,
             dataFim,
-            request.EventoId);
+            request.EventoId,
+            request.Descricao);
 
         if (!result.Ok)
         {

@@ -236,6 +236,25 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
 }
 
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.45;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  border-color: rgba(79, 140, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+}
+
 .row {
   display: flex;
   gap: 10px;
@@ -355,6 +374,14 @@ button.danger {
 .certificado-intro {
   margin-bottom: 16px;
   font-size: 14px;
+}
+
+.certificado-wrapper {
+  margin-top: 8px;
+}
+
+.certificado-status {
+  margin-bottom: 12px;
 }
 
 .certificado-papel {
@@ -755,6 +782,73 @@ video:not(.home-video).show {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
+}
+
+.atividades-descricao-section {
+  margin-top: 8px;
+  padding: 12px 0 10px;
+  border-top: 1px solid var(--border);
+  text-align: left;
+}
+
+.atividades-descricao-label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.atividades-descricao-valor {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: clamp(7rem, 32vh, 15rem);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.atividades-descricao-vazia {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 13px;
+  max-height: none;
+  overflow: visible;
+}
+
+@media (max-width: 520px) {
+  .atividades-descricao-valor:not(.atividades-descricao-vazia) {
+    max-height: clamp(6rem, 40vh, 12rem);
+  }
+}
+
+.admin-atividade-descricao {
+  display: block;
+  width: 100%;
+  min-height: clamp(4.5rem, 14vh, 8.5rem);
+  max-height: clamp(9rem, 42vh, 26rem);
+  resize: vertical;
+  overflow-y: auto;
+}
+
+@media (max-width: 520px) {
+  .admin-atividade-descricao {
+    min-height: clamp(4rem, 22vh, 7.5rem);
+    max-height: clamp(7rem, 48vh, 20rem);
+  }
+}
+
+.admin-textarea-resize-hint {
+  margin: -4px 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.admin-optional-label {
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .eventos-data {

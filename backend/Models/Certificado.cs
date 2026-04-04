@@ -40,14 +40,29 @@ public class Certificado
         set => _nomeEvento = value ?? string.Empty;
     }
 
+    /// <summary>Preenchido no certificado consolidado por inscrições (emitir-resumo).</summary>
+    [BsonIgnoreIfNull]
+    public int? QuantidadeEventos { get; set; }
+
+    /// <summary>Preenchido no certificado consolidado por inscrições (emitir-resumo).</summary>
+    [BsonIgnoreIfNull]
+    public int? QuantidadeAtividades { get; set; }
+
     public Certificado()
     {
     }
 
-    public Certificado(string participanteId, string eventoId, string nomeEvento)
+    public Certificado(
+        string participanteId,
+        string eventoId,
+        string nomeEvento,
+        int? quantidadeEventos = null,
+        int? quantidadeAtividades = null)
     {
         ParticipanteId = participanteId;
         EventoId = eventoId;
         NomeEvento = nomeEvento;
+        QuantidadeEventos = quantidadeEventos;
+        QuantidadeAtividades = quantidadeAtividades;
     }
 }

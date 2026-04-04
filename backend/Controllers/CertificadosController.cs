@@ -119,6 +119,9 @@ public class CertificadosController : ControllerBase
                 ParticipanteId = certificado.ParticipanteId,
                 EventoId = certificado.EventoId,
                 NomeEvento = certificado.NomeEvento,
+                NomeParticipante = participante.Nome,
+                TotalEventos = 1,
+                TotalAtividades = 1,
                 Conteudo = conteudo
             };
 
@@ -132,5 +135,42 @@ public class CertificadosController : ControllerBase
         {
             return StatusCode(500, new ErrorResponse { Message = "Erro inesperado ao gerar certificado." });
         }
+    }
+
+    /// <summary>
+    /// Emite certificado com totais reais de eventos e atividades inscritos pela conta.
+    /// Sem inscrições → 400.
+    /// </summary>
+    [HttpPost("emitir-resumo")]
+    public async Task<IActionResult> EmitirResumo([FromBody] EmitirCertificadoUsuarioRequest request)
+    {
+        var result = await _certificadoService.EmitirPorUsuarioAsync(
+            request.UsuarioId,
+            request.ComoHtml);
+
+        if (!result.Ok)
+        {
+            if (result.ErrorMessage == "Usuário não encontrado.")
+            {
+                return NotFound(new ErrorResponse { Message = result.ErrorMessage });
+            }
+
+            if (result.ErrorMessage == "UsuarioId é obrigatório." ||
+                result.ErrorMessage?.Contains("Não há inscrições", StringComparison.Ordinal) == true ||
+                result.ErrorMessage?.Contains("Não foi possível associar", StringComparison.Ordinal) == true)
+            {
+                return BadRequest(new ErrorResponse { Message = result.ErrorMessage });
+            }
+
+            if (result.ErrorMessage == "Erro ao acessar o banco de dados." ||
+                result.ErrorMessage == "Erro inesperado ao emitir certificado.")
+            {
+                return StatusCode(500, new ErrorResponse { Message = result.ErrorMessage });
+            }
+
+            return BadRequest(new ErrorResponse { Message = result.ErrorMessage ?? "Erro" });
+        }
+
+        return Ok(result.Resposta);
     }
 }

@@ -44,6 +44,10 @@ public class Atividade
     [BsonIgnore]
     public DateTime DataFimEfetiva => DataFim ?? Data;
 
+    /// <summary>Texto opcional exibido na listagem pública da atividade.</summary>
+    [BsonIgnoreIfNull]
+    public string? Descricao { get; set; }
+
     /// <summary>Id (ObjectId string) do <see cref="Evento"/> ao qual esta atividade pertence.</summary>
     public string EventoId
     {
@@ -55,11 +59,12 @@ public class Atividade
     {
     }
 
-    public Atividade(string nome, DateTime dataInicio, DateTime? dataFim, string eventoId)
+    public Atividade(string nome, DateTime dataInicio, DateTime? dataFim, string eventoId, string? descricao = null)
     {
         Nome = nome;
         Data = dataInicio;
         DataFim = dataFim;
         EventoId = eventoId;
+        Descricao = string.IsNullOrWhiteSpace(descricao) ? null : descricao.Trim();
     }
 }

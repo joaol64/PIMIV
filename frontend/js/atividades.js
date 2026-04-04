@@ -91,6 +91,7 @@ function renderizarAtividades(itens, contagemPorAtividadeId) {
   itens.forEach((a) => {
     const id = a.id ?? a.Id ?? "";
     const nome = a.nome ?? a.Nome ?? "Atividade";
+    const descricao = (a.descricao ?? a.Descricao ?? "").trim();
     const dataInicio = a.data ?? a.Data ?? null;
     const dataFim = a.dataFim ?? a.DataFim ?? null;
     const fimEfetivo = dataFim ?? dataInicio;
@@ -105,6 +106,23 @@ function renderizarAtividades(itens, contagemPorAtividadeId) {
     h2.textContent = nome;
 
     li.appendChild(h2);
+
+    const descSection = document.createElement("div");
+    descSection.className = "atividades-descricao-section";
+    const descLab = document.createElement("span");
+    descLab.className = "eventos-periodo-label atividades-descricao-label";
+    descLab.textContent = "Descrição";
+    const descVal = document.createElement("div");
+    descVal.className = "atividades-descricao-valor";
+    if (descricao) {
+      descVal.textContent = descricao;
+    } else {
+      descVal.classList.add("atividades-descricao-vazia");
+      descVal.textContent = "Nenhuma descrição cadastrada para esta atividade.";
+    }
+    descSection.appendChild(descLab);
+    descSection.appendChild(descVal);
+    li.appendChild(descSection);
 
     if (intervalo) {
       const periodo = document.createElement("div");

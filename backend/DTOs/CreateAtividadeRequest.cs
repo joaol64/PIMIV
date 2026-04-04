@@ -7,6 +7,9 @@ public class CreateAtividadeRequest
 
     public string Nome { get; set; } = string.Empty;
 
+    /// <summary>Descrição opcional (texto livre, exibida na interface pública).</summary>
+    public string? Descricao { get; set; }
+
     /// <summary>Início (ISO-8601). Se vazio, usa <see cref="Data"/> (legado).</summary>
     public string DataInicio { get; set; } = string.Empty;
 
