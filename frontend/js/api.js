@@ -3,9 +3,14 @@
 // - Frontend (HTML/JS) e backend (.NET) são projetos separados.
 // - O navegador chama o backend via HTTP usando fetch().
 // - O backend responde JSON.
-// Com dotnet run na sua máquina a API costuma ser http://localhost:5000/api
-// (troque para a URL do Render em produção).
-const API_URL = "http://localhost:5000/api";
+//
+// Produção (ex.: Vercel): aponta para a API no Render (inclua /api — rotas são /api/eventos, etc.).
+// Local: com backend em dotnet run, use localhost.
+const API_URL =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "http://localhost:5000/api"
+    : "https://pimiv.onrender.com/api";
 
 async function apiGet(path) {
   const response = await fetch(`${API_URL}${path}`);
