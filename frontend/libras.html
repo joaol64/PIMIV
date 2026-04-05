@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Explicação do sistema de eventos acadêmicos em Libras e glossário de termos." />
-    <title>Sistema em Libras — Glossário</title>
+    <meta
+      name="description"
+      content="Glossário em Libras: termos do sistema com vídeo do sinal e descrição em português."
+    />
+    <title>Glossário em Libras</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -25,68 +28,176 @@
           <a href="certificado.html">Certificado</a>
         </nav>
 
-        <h1>Sistema de eventos em Libras</h1>
-        <p class="libras-lead">
-          Esta página reúne uma explicação em <strong>Língua Brasileira de Sinais (Libras)</strong> sobre o
-          protótipo e um glossário dos principais termos.
-        </p>
+        <h1>Glossário em Libras</h1>
 
-        <section class="libras-secao" aria-labelledby="titulo-video-libras">
-          <h2 id="titulo-video-libras">Explicação do sistema (Libras)</h2>
-          <p class="home-muted">
-            O vídeo abaixo é um <strong>espaço reservado</strong>. Substitua <code>video.mp4</code> por uma
-            gravação em Libras explicando cadastro, eventos, inscrições e certificado. Quando houver arquivo de
-            legendas (<code>.vtt</code>), adicione a tag <code>&lt;track kind="captions"&gt;</code> para reforçar
-            a acessibilidade.
-          </p>
-
-          <div class="libras-video-wrap">
-            <video
-              class="home-video libras-video"
-              controls
-              preload="metadata"
-              playsinline
-              aria-describedby="descricao-video-libras"
-            >
-              <source src="video.mp4" type="video/mp4" />
-              <p>
-                Seu navegador não reproduz vídeo HTML5. Use uma página com transcrição ou link alternativo em
-                Libras.
-              </p>
-            </video>
-          </div>
-          <p id="descricao-video-libras" class="libras-video-descricao">
-            Vídeo de apresentação do sistema em Libras (substituir o arquivo quando disponível).
-          </p>
-        </section>
 
         <section class="libras-secao" aria-labelledby="titulo-glossario">
-          <h2 id="titulo-glossario">Glossário</h2>
+          <h2 id="titulo-glossario">Termos do glossário</h2>
           <p class="home-muted libras-glossario-intro">
-            Significados dos termos usados neste projeto, em português. Os títulos podem ser associados a sinais em
-            Libras no material em vídeo.
+            Lista de conceitos usados neste projeto acadêmico, com suporte visual em Língua Brasileira de Sinais
+            (Libras).
           </p>
 
-          <dl class="glossario">
+          <dl class="glossario glossario--com-video">
+            <div class="glossario-item">
+              <dt>Acessibilidade</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Acessibilidade">
+                    <source src="videos/glossario1.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Sistema acessível. Todas as pessoas podem usar.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Login</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Login">
+                    <source src="videos/glossario2.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Entrar no sistema usando e-mail e senha.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Cadastro</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Cadastro">
+                    <source src="videos/glossario3.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Criar conta no sistema.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Usuário</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Usuário">
+                    <source src="videos/glossario4.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Pessoa que usa o sistema.</p>
+              </dd>
+            </div>
             <div class="glossario-item">
               <dt>Evento</dt>
               <dd>
-                Encontro acadêmico organizado (por exemplo, semana de integração ou mostra de trabalhos). No sistema,
-                cada evento tem nome, data e pode reunir várias atividades.
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Evento">
+                    <source src="videos/glossario5.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Atividade disponível no sistema.</p>
               </dd>
             </div>
             <div class="glossario-item">
               <dt>Inscrição</dt>
               <dd>
-                Ato de confirmar a participação em uma <strong>atividade</strong> específica de um evento. Após o
-                login, o participante escolhe a atividade e registra a inscrição na API.
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Inscrição">
+                    <source src="videos/glossario6.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Participar do evento. Fazer registro.</p>
               </dd>
             </div>
             <div class="glossario-item">
               <dt>Certificado</dt>
               <dd>
-                Documento que comprova a participação no evento. Neste protótipo, o texto pode ser visualizado na
-                página e baixado em formato simples (arquivo de texto).
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Certificado">
+                    <source src="videos/glossario7.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Documento que comprova participação.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Frontend</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Frontend">
+                    <source src="videos/glossario8.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Parte visual do sistema. Tela que o usuário vê.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Backend</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Backend">
+                    <source src="videos/glossario9.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Parte interna do sistema. Processa dados.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>API</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo API">
+                    <source src="videos/glossario10.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Comunicação entre frontend e backend.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Banco de dados</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video
+                    controls
+                    preload="metadata"
+                    playsinline
+                    aria-label="Sinal em Libras para o termo Banco de dados"
+                  >
+                    <source src="videos/glossario11.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Local onde as informações ficam armazenadas.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Interface</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Interface">
+                    <source src="videos/glossario12.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Tela do sistema. Onde o usuário interage.</p>
+              </dd>
+            </div>
+            <div class="glossario-item">
+              <dt>Logout</dt>
+              <dd>
+                <div class="glossario-video">
+                  <video controls preload="metadata" playsinline aria-label="Sinal em Libras para o termo Logout">
+                    <source src="videos/glossario13.mp4" type="video/mp4" />
+                    Seu navegador não suporta vídeo HTML5.
+                  </video>
+                </div>
+                <p>Sair do sistema.</p>
               </dd>
             </div>
           </dl>

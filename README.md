@@ -112,8 +112,9 @@ O **cliente** é o **navegador**, que carrega HTML/CSS/JS estáticos (ou servido
 
 | Caminho | Função |
 |---------|--------|
-| `*.html` | Páginas: login, cadastro, home, eventos, atividades, inscrição, certificado, Libras. |
-| `css/style.css` | Estilos globais, componentes de cards, listas, modal admin, responsividade. |
+| `*.html` | Páginas: login, cadastro, home, eventos, atividades, inscrição, certificado, Libras (`libras.html`). |
+| `videos/` | Vídeos do **glossário em Libras**: arquivos `glossario1.mp4` a `glossario13.mp4` usados por `libras.html` (caminhos relativos à pasta `frontend`). Arquivos grandes costumam ficar só na máquina local ou no deploy; a pasta pode existir vazia no Git com `.gitkeep`. |
+| `css/style.css` | Estilos globais, componentes de cards, listas, modal admin, responsividade; vídeos “revelados” por botão em algumas páginas vs. glossário sempre visível. |
 | `js/api.js` | URL base da API, `fetch`, normalização de usuário, contagens públicas de inscrição. |
 | `js/theme.js` | Tema claro/escuro e `data-theme` no `body`. |
 | `js/dates.js` | Formatação de datas vindas da API em pt-BR. |
@@ -220,8 +221,9 @@ Exemplos no código:
 
 ### 6.8 Acessibilidade
 
-- Vídeo em **Libras** na home (e conteúdo relacionado em **`libras.html`**).
-- Uso de **`aria-label`**, **`aria-current`**, **`role`** onde cabível; alternância de tema para contraste; textos descritivos no fluxo de inscrição e certificado.
+- **Home** — vídeo em Libras (classe CSS `home-video`, sempre visível) e registro opcional de “já assistiu” via API.
+- **`libras.html`** — glossário estático: para cada termo há um elemento **`<video>`** (`controls`, `preload="metadata"`) apontando para `videos/glossario1.mp4` … `videos/glossario13.mp4`, com **`aria-label`** por termo e descrição em português ao lado.
+- Uso de **`aria-label`**, **`aria-current`**, **`role`** onde cabível; alternância de tema para contraste; textos descritivos no fluxo de inscrição e certificado; link **“Ir para o conteúdo principal”** (`skip-link`) nas páginas do protótipo.
 
 ---
 
@@ -237,7 +239,7 @@ Exemplos no código:
 | **Visualização de atividades** | `GET /api/eventos/{eventoId}/atividades`; contagem por atividade; exibição de descrição. |
 | **Inscrição** | `POST /api/inscricoes`; verificação de duplicidade (**409**). |
 | **Certificado (resumo)** | `POST /api/certificados/emitir-resumo`; exige inscrições; legado `POST /api/certificados` (participante + evento fixos). |
-| **Libras** | Página dedicada e integração com o fluxo da home. |
+| **Libras** | Página **`libras.html`** com glossário (13 termos + vídeo + texto); na home, vídeo introdutório e fluxo de “vídeo visto”. |
 | **Vídeo visto** | `POST /api/auth/video-seen` para persistir flag no usuário. |
 
 ---
@@ -256,7 +258,9 @@ Por padrão a API escuta **`http://*:5000`** (ou o valor da variável **`PORT`**
 
 ### 8.2 Frontend
 
-Servir a pasta **`frontend`** com um **servidor HTTP estático** (evita limitações de **`file://`** com **`fetch`**). Exemplos: extensão “Live Server”, `npx serve frontend`, ou IIS/Apache apontando para a pasta.
+Servir a pasta **`frontend`** com um **servidor HTTP estático** (evita limitações de **`file://`** com **`fetch`** e garante carregamento correto dos **`.mp4`** do glossário). Exemplos: extensão “Live Server”, `npx serve frontend`, ou IIS/Apache apontando para a pasta.
+
+Coloque os arquivos **`glossario1.mp4`–`glossario13.mp4`** em **`frontend/videos/`** para a página Libras exibir os sinais. Os nomes devem coincidir exatamente com os usados no HTML (incluindo minúsculas).
 
 ### 8.3 Conexão com o MongoDB
 
